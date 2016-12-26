@@ -5,6 +5,54 @@
 #include <vector>
 const char* notes[12] = { "C-", "C#", "D-", "D#", "E-", "F-", "F#", "G-", "G#", "A-", "A#", "B-" };
 
+const char* get_em_name(int nr)
+{
+	switch (nr)
+	{
+		case  2: return "BAR";
+		case  3: return "BATTLE1";
+		case  4: return "BATTLE2";
+		case  5: return "BATTLE3";
+		case  6: return "SHOP1";
+		case  7: return "ENDING";
+		case  8: return "HOUSE1";
+		case  9: return "CEMETARY";
+		case 10: return "GIRL";
+		case 11: return "HOUSE2";
+		case 12: return "TRAIN_ENGINEER";
+		case 13: return "CASTLE";
+		case 14: return "NUDE_BEACH";
+		case 15: return "MENU";
+		case 16: return "INTRO";
+		case 17: return "SHOP2";
+		case 18: return "SHOP3";
+		case 19: return "GARBAGE1";
+		case 20: return "FIST_BASE";
+		case 21: return "CLUB10";
+		case 22: return "UNKNOWN";
+		case 23: return "POLICEHQ";
+		case 24: return "RESEARCH_CENTER";
+		case 25: return "HOUSE3";
+		case 26: return "CREDITS";
+		case 27: return "CENTRAL_COBRA";
+		case 28: return "WEST_COBRA";
+		case 29: return "EAST_COBRA";
+		case 30: return "SOUTH_COBRA";
+		case 31: return "BOSS_TALK";
+		case 32: return "UNKNOWN2";
+		case 33: return "VICTORY";
+		case 34: return "FIGHT_WIN";
+		case 35: return "GAMEOVER";
+		case 36: return "MARRY";
+		case 37: return "GARBAGE2";
+		case 38: return "GARBAGE3";
+		case 39: return "GARBAGE4";
+		case 40: return "GARBAGE5";
+		case 41: return "FALLING";
+	}
+	return "";
+}
+
 std::string& get_track_string(int channel, std::vector<std::string>& track_strings, int row)
 {
 	if (row < track_strings.size() + 1)
@@ -97,9 +145,9 @@ int main()
 					case 0x97: rows = 32; break; // hmmmmyeeesshh
 					default:
 					{
-						char buf[32];
-						sprintf(buf, "x%02X | ", c);
-						get_track_string(i, track_strings, current_row_string_nr++) += buf;
+						//char buf[32];
+						//sprintf(buf, "x%02X | ", c);
+						//get_track_string(i, track_strings, current_row_string_nr++) += buf;
 					}
 					break;
 					}
@@ -107,7 +155,7 @@ int main()
 			}
 		}
 		char out[64];
-		sprintf_s(out, "out%d.txt", emi);
+		sprintf_s(out, "%d - %s.txt", emi, get_em_name(emi));
 		fopen_s(&fp, out, "w+");
 		for (auto& string : track_strings)
 		{
