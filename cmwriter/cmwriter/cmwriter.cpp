@@ -431,13 +431,24 @@ public:
 
 						//Color color = get_color(c);
 						Color color = m_palette[c >> 4];
+					#ifdef SHOW_TRIGGERS
 						if (mask != 0)
 						{
 							color.m_r = 255 - color.m_r;
 							color.m_g = 255 - color.m_g;
 							color.m_b = 255 - color.m_b;
 						}
-
+					#endif 
+#define RENDER_GRID
+#ifdef RENDER_GRID
+						if (pixel == 0 || line == 0)
+						{
+							color.m_r = 0;
+							color.m_g = 0;
+							color.m_b = 0;
+						}
+#endif 
+					#ifdef DEBUG_HEX_CHARS
 						// Debug hex chars! These are 3 by 5 character
 						if (pixel < (CHAR_WIDTH*2) && line < CHAR_HEIGHT) // Tile byte
 						{
@@ -459,6 +470,7 @@ public:
 								mult = 0xAA;
 							color = get_color(char_array[line * CHAR_WIDTH + x] * mult);
 						}
+					#endif //  DEBUG_HEX_CHARS
 
 						row[rowpos++] = color.m_r;
 						row[rowpos++] = color.m_g;
@@ -1195,9 +1207,9 @@ void dmg_test()
 
 int main(int argc, char* argv[])
 {
-	dmg_test();
+	//dmg_test();
 	//dump_vol_files();
-	//parse_med_vol();
+	parse_med_vol();
 	//dump_pcm_files();
 	//dump_vol_file("MED.VOL", "MD");
 	//dump_vol_file("MAP.VOL", "GC");
