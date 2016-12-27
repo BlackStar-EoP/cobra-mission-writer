@@ -11,6 +11,13 @@
 typedef unsigned int uint;
 typedef unsigned char byte;
 
+FILE _iob[] = { *stdin, *stdout, *stderr };
+
+extern "C" FILE * __cdecl __iob_func(void)
+{
+	return _iob;
+}
+
 int get_file_size(const std::string& file);
 class Color
 {
