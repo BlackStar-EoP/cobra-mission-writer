@@ -3,6 +3,8 @@
 #include <QMainWindow>
 #include <stdint.h>
 
+class GCWidget;
+
 class MainWindow : public QMainWindow
 {
 public:
@@ -12,5 +14,5 @@ public:
 	void dropEvent(QDropEvent *e) override;
 
 private:
-	uint8_t* m_gc_data = nullptr;
+	GCWidget* m_GC_widget = nullptr;
 };
