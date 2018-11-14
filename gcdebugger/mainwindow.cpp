@@ -48,7 +48,7 @@ void MainWindow::dropEvent(QDropEvent *e)
 					uint8_t* gc_data = new uint8_t[size];
 					memcpy(gc_data, f.readAll().data(), size);
 					f.close();
-					m_GC_widget->set_gc_data(fname, gc_data);
+					m_GC_widget->set_gc_data(fname, gc_data, size);
 				}
 
 			}
