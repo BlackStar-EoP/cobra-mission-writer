@@ -14,5 +14,25 @@ cmwriter/cmwriter/Debug/
 *.filters
 *.user
 *.pdb
+*.db
+*.sdf
+*.suo
+*.lib
+*.txt
+*.com
+*.emi
 cmwriter/cmwriter/Release/
+cmwriter/cmwriter/Debug/
+cmwriter/Debug/
 emidump/Debug/
+emidump/.vs/
+cmwriter/.vs/
+cmwriter/cmwriter/AREAHEADERS
+cmwriter/cmwriter/EMI.VOL_ - Copy/
+cmwriter/cmwriter/backuptroep/
+cmwriter/cmwriter/levels.zip
+cmwriter/cobra-mission/
+gcdebugger/.qmake.stash
+gcdebugger/.vs/
+gcdebugger/debug/
+gcdebugger/release/

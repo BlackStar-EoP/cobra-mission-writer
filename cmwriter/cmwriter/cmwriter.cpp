@@ -700,7 +700,7 @@ void dump_vol_file(const std::string& file, const std::string& extension)
 			fread(buffer, 1, length, fp);
 
 			char destfilename[256];
-			sprintf_s(destfilename, "%s/%d.%s", dir.c_str(), o, extension.c_str());
+			sprintf_s(destfilename, "%d.%s", o, extension.c_str());
 			FILE* output = nullptr;
 			fopen_s(&output, destfilename, "wb+");
 			if (output)
@@ -1209,7 +1209,7 @@ int main(int argc, char* argv[])
 {
 	//dmg_test();
 	//dump_vol_files();
-	parse_med_vol();
+	//parse_med_vol();
 	//dump_pcm_files();
 	//dump_vol_file("MED.VOL", "MD");
 	//dump_vol_file("MAP.VOL", "GC");
@@ -1217,7 +1217,7 @@ int main(int argc, char* argv[])
 	//dump_vol_file("PIC3.VOL", "GC");
 	//dump_vol_file("DAT.VOL", "DAT");
 	//dump_vol_file("ECG.VOL", "GFX");
-	//dump_vol_file("EMI.VOL", "EM");
+	dump_vol_file("EMI.VOL", "EM");
 	//dump_vol_file("ENM.VOL", "GFX");
 	//dump_vol_file("ICP.VOL", "ICP");
 	//dump_vol_file("CODE.VOL", "COD");

@@ -3,9 +3,11 @@
 
 #include "stdafx.h"
 #include <vector>
+#include <set>
+#include <algorithm>
 #include <assert.h>
 const char* notes[12] = { "C-", "C#", "D-", "D#", "E-", "F-", "F#", "G-", "G#", "A-", "A#", "B-" };
-
+std::set<uint8_t> gUsedInstruments;
 const char* get_em_name(int nr)
 {
 	switch (nr)
@@ -53,6 +55,68 @@ const char* get_em_name(int nr)
 	}
 	return "";
 }
+
+class Instrument
+{
+public:
+	Instrument(int nr, uint8_t *data)
+	: nr_(nr)
+	{
+		memcpy(data_, data, 32);
+	}
+
+	void writeHalf()
+	{
+		char buf[32];
+		sprintf(buf, "%03d-%02X.ins", nr_, nr_);
+
+		FILE* fp;
+		fopen_s(&fp, buf, "wb");
+		if (fp)
+		{
+			fwrite(data_, 1, 12, fp);
+			fclose(fp);
+		}
+	}
+
+	int nr_;
+	uint8_t data_[32];
+};
+
+std::vector<Instrument> gInstruments;
+
+void readInstruments()
+{
+	FILE* fp;
+	fopen_s(&fp, "1.emi", "rb");
+	if (fp)
+	{
+		fseek(fp, 0, SEEK_END);
+		int size = ftell(fp);
+		rewind(fp);
+		uint8_t* bytes = new uint8_t[size];
+		fread(bytes, 1, size, fp);
+		fclose(fp);
+
+		uint8_t* currentOffset = bytes;
+		for (int i = 0; i < (size / 32); ++i)
+		{
+			gInstruments.push_back(Instrument(i, currentOffset));
+			currentOffset += 32;
+		}
+
+
+		delete[] bytes;
+	}
+
+	for (Instrument& i : gInstruments)
+	{
+		i.writeHalf();
+	}
+
+	printf("");
+}
+
 
 std::string& get_track_string(int channel, std::vector<std::string>& track_strings, int row)
 {
@@ -462,7 +526,7 @@ public:
 	std::string get_track_byte_str(uint16_t pos) const
 	{
 		if (pos >= length_)
-			return "-----|-";
+			return "-----(--)(--)|-";
 		char buf[32];
 		sprintf(buf, "0x%02X | ", data_[pos]);
 		return buf;
@@ -471,7 +535,7 @@ public:
 	std::string get_track_string(size_t pos) const
 	{
 		if (pos >= track_strings_.size())
-			return "-xxxx|-";
+			return "-xxxx(xx)(xx)|-";
 		return track_strings_[pos];
 	}
 
@@ -481,11 +545,32 @@ public:
 	}
 
 private:
+
+	std::string get_byte_string(uint8_t b)
+	{
+		char buf[32];
+		sprintf(buf, "%02X", b);
+		return std::string(buf);
+	}
+
+	std::string effectString(std::vector<std::pair<std::string, std::string>>& effects)
+	{
+		if (effects.empty())
+			return "(--)(--)";
+
+		std::string fxStr = "(";
+		fxStr += effects.front().first + ")(";
+		fxStr += effects.front().second + ")";
+		effects.erase(effects.begin());
+		return fxStr;
+	}
+
 	void build_track_strings()
 	{
-//#define DEBUG_CONTROL_COMMANDS
-//#define DEBUG_SPEED
+#define DEBUG_CONTROL_COMMANDS
+#define DEBUG_SPEED
 		uint8_t rows = 0;
+		std::vector<std::pair<std::string, std::string>> cachedEffects;
 		for (uint16_t pos = 0; pos < length_; ++pos)
 		{
 			unsigned char value = data_[pos];
@@ -498,12 +583,21 @@ private:
 			case 0xE7:
 			case 0xE8:
 			case 0xFB:
-			case 0xFD:
+			case 0xFD: // Select instrument, instrument is likely offset in the first entry in EMI which is exactly 256 * 16 bytes
+				if (data_[pos] == 0xFD)
+				{
+					gUsedInstruments.insert(data_[pos + 1]);
+				}
 			case 0xF7:
 			case 0xFA:
 			case 0xFC:
+			{
+				std::string fx1 = get_byte_string(data_[pos]);
+				std::string fx2 = get_byte_string(data_[pos+1]);
+				cachedEffects.push_back(std::pair<std::string, std::string>(fx1, fx2));
 				++pos;
 				continue;
+			}
 
 			// 1 byte control command
 			case 0xCD:
@@ -512,7 +606,12 @@ private:
 			case 0xDD:
 			case 0xCE:
 			case 0xF8: // Loop command?
+			{
+				std::string fx1 = get_byte_string(data_[pos]);
+				std::string fx2 = "--";
+				cachedEffects.push_back(std::pair<std::string, std::string>(fx1, fx2));
 				continue;
+			}
 
 			// Speed/tempo change
 			case 0x81: rows = 2; continue;
@@ -534,30 +633,30 @@ private:
 			if (value >= 0 && value <= 0x7F)
 			{
 				if (value == 0)
-					track_strings_.push_back("-DUM-|-");
+					track_strings_.push_back(std::string("-DUM-") + effectString(cachedEffects) + "|-");
 				else
 				{
 					char buf[32];
 					if (value / 12 < 10)
-						sprintf_s(buf, "%s%d  | ", notes[value % 12], value / 12);
+						sprintf_s(buf, "%s%d--", notes[value % 12], value / 12);
 					else
-						sprintf_s(buf, "%s%d | ", notes[value % 12], value / 12);
+						sprintf_s(buf, "%s%d-", notes[value % 12], value / 12);
 
-					track_strings_.push_back(buf);
+					track_strings_.push_back(std::string(buf) + effectString(cachedEffects) + "|-");
 				}
 #ifdef DEBUG_SPEED
 				for (uint8_t r = 1; r < rows; ++r)
 				{
-					track_strings_.push_back("-----|-");
+					track_strings_.push_back(std::string("-----") + effectString(cachedEffects) + "|-");
 				}
 
 #endif
 			}
 			else
 			{
-				char buf[32];
-				sprintf(buf, "0x%02X | ", data_[pos]);
-				track_strings_.push_back(buf);
+				std::string fx1 = "UK";
+				std::string fx2 = get_byte_string(data_[pos]);
+				cachedEffects.push_back(std::pair<std::string, std::string>(fx1, fx2));
 			}
 		}
 	}
@@ -569,9 +668,11 @@ private:
 
 int main()
 {
-	//for (int emi = 2; emi < 42; ++emi) // all
-	int emi = 3;
-	//for (int emi = 9; emi < 10; ++emi)
+	readInstruments();
+
+	for (int emi = 2; emi < 42; ++emi) // all
+	//int emi = 9;
+	//for (int emi = 9; emi < 9; ++emi)
 	{
 		FILE* fp;
 		char in[64];
@@ -653,85 +754,8 @@ int main()
 			track_strings.push_back(row);
 		}
 
-		//for (int i = 0; i < trackoffsets.size() - 1; ++i)
-		//{
-		//	int begin = trackoffsets[i];
-		//	int end = trackoffsets[i + 1];
-
-		//	int rows = 0;
-		//	int currentrow = 1;
-		//	int current_row_string_nr = 0;
-		//	for (int trkpos = begin; trkpos < end; ++trkpos)
-		//	{
-
-		//		unsigned char c = bytes[trkpos];
-		//		if (c < 128)
-		//		{
-		//			char buffer[128];
-		//			sprintf_s(buffer, "%s%d | ", notes[c % 12], c / 12);
-		//			get_track_string(i, track_strings, current_row_string_nr++) += buffer;
-
-		//			for (int row = 1; row < rows; ++row)
-		//			{
-		//				if (row % 4 == 0)
-		//				{
-		//					get_track_string(i, track_strings, current_row_string_nr++) += "-*- | ";
-		//				}
-		//				else
-		//				{
-		//					get_track_string(i, track_strings, current_row_string_nr++) += "--- | ";
-		//				}
-		//			}
-		//		}
-		//		else
-		//		{
-		//			/*
-		//			switch (c)
-		//			{
-		//			case 0xF8: break; // Change track
-		//			case 0x82: rows = 2; break;
-		//			case 0x83: rows = 4; break;
-		//			case 0x84: rows = 8; break;
-		//			case 0x85: rows = 16; break;
-		//			case 0x8B: rows = 24; break;
-
-		//			case 0x8E: rows = 1; break; // hmmmmyeeesshh
-
-		//			case 0x90: rows = 6; break; // hmmmmyeeesshh
-		//			case 0x97: rows = 32; break; // hmmmmyeeesshh
-		//			default:
-		//			{
-		//				//char buf[32];
-		//				//sprintf(buf, "x%02X | ", c);
-		//				//get_track_string(i, track_strings, current_row_string_nr++) += buf;
-		//			}
-		//			break;
-		//			}*/
-		//			switch (c)
-		//			{
-		//			case 0xF8: break; // Change track
-		//			case 0x81: rows = 2; break;
-		//			case 0x82: rows = 4; break;
-		//			case 0x83: rows = 8; break;
-		//			case 0x84: rows = 16; break;
-		//			case 0x85: rows = 32; break;
-		//			case 0x8B: rows = 48; break;
-
-		//			case 0x8E: rows = 1; break; // hmmmmyeeesshh
-
-		//			case 0x90: rows = 6; break; // hmmmmyeeesshh
-		//			case 0x97: rows = 32; break; // hmmmmyeeesshh
-		//			default:
-		//			{
-		//				//char buf[32];
-		//				//sprintf(buf, "x%02X | ", c);
-		//				//get_track_string(i, track_strings, current_row_string_nr++) += buf;
-		//			}
-		//			break;
-		//			}
-		//		}
-		//	}
-		//}
+		//std::sort(gUsedInstruments.begin(), gUsedInstruments.end());
+#ifdef WRITE_FILES
 		char out[64];
 		sprintf_s(out, "%d - %s.txt", emi, get_em_name(emi));
 		fopen_s(&fp, out, "w+");
@@ -740,6 +764,7 @@ int main()
 			fprintf(fp, "%s\n", string.c_str());
 		}
 		fclose(fp);
+#endif
 		delete[] track;
 	}
     return 0;
