@@ -1,5 +1,8 @@
 #include <QWidget>
 
+class QLabel;
+class PaletteWidget;
+
 class GCWidget : public QWidget
 {
 public:
@@ -8,8 +11,14 @@ public:
 
 private:
 	void readGCdata();
+	void initUI();
 
 private:
 	QString m_filename;
 	uint8_t* m_gc_data = nullptr;
+
+	QLabel* m_filename_label = nullptr;
+	QLabel* m_filesize_label = nullptr;
+
+	PaletteWidget* m_palette_widgets[16];
 };
