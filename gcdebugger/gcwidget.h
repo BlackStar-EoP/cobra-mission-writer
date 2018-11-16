@@ -15,6 +15,7 @@ private:
 	void updateData();
 	void updateHexLabels();
 	void updatePixels();
+	void updateBinaryLabels();
 	void initUI();
 
 private slots:
@@ -39,4 +40,7 @@ private:
 
 	static const uint32_t NUM_PIXELS = 8;
 	QLabel* m_pixel_labels[NUM_PIXELS];
+
+	static const uint32_t NUM_BINARY_LABELS = 4;
+	QLabel* m_binary_labels[NUM_BINARY_LABELS];
 };

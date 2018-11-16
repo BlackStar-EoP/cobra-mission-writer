@@ -99,6 +99,7 @@ void GCWidget::updateData()
 {
 	updateHexLabels();
 	updatePixels();
+	updateBinaryLabels();
 }
 
 
@@ -145,6 +146,30 @@ void GCWidget::updatePixels()
 		m_pixel_labels[pixel]->setPalette(pal);
 
 		bit >>= 1;
+	}
+}
+
+void GCWidget::updateBinaryLabels()
+{
+	return;
+	uint8_t byte1 = m_gc_data[m_file_offset];
+	uint8_t byte2 = m_gc_data[m_file_offset + 1];
+	uint8_t byte3 = m_gc_data[m_file_offset + 2];
+	uint8_t byte4 = m_gc_data[m_file_offset + 3];
+
+	for (uint32_t i = 0; i < NUM_BINARY_LABELS; ++i)
+	{
+		uint8_t byte = m_gc_data[m_file_offset + i];
+		QString byteString;
+		for (uint8_t bit = 0x80; bit != 0; bit >>= 1)
+		{
+			if ((byte & bit) > 0)
+				byteString += "1";
+			else
+				byteString += "0";
+		}
+
+		m_pixel_labels[i]->setText(byteString);
 	}
 }
 
@@ -213,6 +238,15 @@ void GCWidget::initUI()
 		pixelLabel->setGeometry(40 + PIXEL_LABEL_SIZE * i, 160, PIXEL_LABEL_SIZE, PIXEL_LABEL_SIZE);
 	//	pixelLabel->setStyleSheet("border: 1px solid black");
 		m_pixel_labels[i] = pixelLabel;
+	}
+
+	int yBegin = 200;
+	for (uint32_t i = 0; i < NUM_BINARY_LABELS; ++i)
+	{
+		QLabel* binaryLabel = new QLabel("00000000", this);
+		binaryLabel->setGeometry(40, yBegin, 200, 20);
+		yBegin += 25;
+		m_binary_labels[i] = binaryLabel;
 	}
 }
 
