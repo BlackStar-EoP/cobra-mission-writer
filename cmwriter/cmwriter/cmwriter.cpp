@@ -1,12 +1,13 @@
 #include "stdafx.h"
-#include "png.h"
+//#include "png.h"
+#include <string>
 #include "stdio.h"
 #include "stdlib.h"
 #include <stdint.h>
 #include <vector>
 #include "chars.h"
-#pragma comment(lib, "libpng15.lib")
-#pragma comment(lib, "zlib.lib")
+//#pragma comment(lib, "libpng15.lib")
+//#pragma comment(lib, "zlib.lib")
 
 typedef unsigned int uint;
 typedef unsigned char byte;
@@ -74,142 +75,142 @@ Color get_color(byte c)
 	return Color(0xFF, 0x00, 0xFF);
 }
 
-void dump_mcg_vol()
-{
-	int MULTIPLIER = 40;
-	int width = 32 * MULTIPLIER;
-	int height = 55840 / MULTIPLIER;
-	uint bytes_per_pixel = 4;
-	byte* buffer = new byte[32 * 55842 * 4];
-
-	FILE* cm = nullptr;
-	fopen_s(&cm, "mcg.vol", "rb");
-	fread(buffer, 1, 32 * 55842, cm);
-	fclose(cm);
-
-
-
-	int code = 0;
-	FILE *fp;
-	png_structp png_ptr;
-	png_infop info_ptr;
-	png_bytep row;
-
-	// Open file for writing (binary mode)
-	static int i = 0;
-	char filename[512];
-	char title[] = "Edge of Panic";
-	while (i < 100000)
-	{
-		sprintf_s(filename, "screenshot-%d.png", ++i);
-		fopen_s(&fp, filename, "r");
-		if (fp != nullptr)
-		{
-			fclose(fp);
-			continue;
-		}
-		else
-			fopen_s(&fp, filename, "wb");
-		break;
-	}
-
-
-	if (fp == NULL)
-	{
-		fprintf(stderr, "Could not open file %s for writing\n", filename);
-		code = 1;
-		goto finalise;
-	}
-
-	// Initialize write structure
-	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	if (png_ptr == NULL)
-	{
-		fprintf(stderr, "Could not allocate write struct\n");
-		code = 1;
-		goto finalise;
-	}
-
-	// Initialize info structure
-	info_ptr = png_create_info_struct(png_ptr);
-	if (info_ptr == NULL)
-	{
-		fprintf(stderr, "Could not allocate info struct\n");
-		code = 1;
-		goto finalise;
-	}
-
-	// Setup Exception handling
-	if (setjmp(png_jmpbuf(png_ptr))) {
-		fprintf(stderr, "Error during png creation\n");
-		code = 1;
-		goto finalise;
-	}
-
-	png_init_io(png_ptr, fp);
-
-	// Write header (8 bit colour depth)
-	png_set_IHDR(png_ptr, info_ptr, width, height,
-		8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
-		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-
-	// Set title
-	if (title != NULL) {
-		png_text title_text;
-		title_text.compression = PNG_TEXT_COMPRESSION_NONE;
-		title_text.key = "Title";
-		title_text.text = title;
-		png_set_text(png_ptr, info_ptr, &title_text, 1);
-	}
-
-	png_write_info(png_ptr, info_ptr);
-
-	// Allocate memory for one row (4 bytes per pixel - RGBA)
-	row = (png_bytep)malloc(4 * width * sizeof(png_byte));
-
-	// Write image data
-	uint pos = 0;
-	uint rowpos = 0;
-	//for (int y = height-1; y >= 0; --y)
-
-	for (int y = 0; y < height; ++y)
-	{
-		int offset = 64 + (y * 32) + ((y / 32) * MULTIPLIER * 0x400);
-
-		for (int m = 0; m < MULTIPLIER; ++m)
-		{
-			for (int x = 0; x < 32; ++x)
-			{
-				byte c = 0xBB;
-
-				if (offset < 55842 * 32 * 4)
-					c = buffer[offset + x];
-				else
-					printf("");
-
-				Color color = get_color(c);
-				row[rowpos++] = color.m_r;
-				row[rowpos++] = color.m_g;
-				row[rowpos++] = color.m_b;
-				row[rowpos++] = color.m_a;
-			}
-			offset += 0x400;
-		}
-		png_write_row(png_ptr, row);
-		rowpos = 0;
-	}
-
-	// End write
-	png_write_end(png_ptr, NULL);
-
-finalise:
-	if (fp != NULL) fclose(fp);
-	if (info_ptr != NULL) png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1);
-	if (png_ptr != NULL) png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
-	if (row != NULL) free(row);
-
-	delete[] buffer;
-}
+//void dump_mcg_vol()
+//{
+//	int MULTIPLIER = 40;
+//	int width = 32 * MULTIPLIER;
+//	int height = 55840 / MULTIPLIER;
+//	uint bytes_per_pixel = 4;
+//	byte* buffer = new byte[32 * 55842 * 4];
+//
+//	FILE* cm = nullptr;
+//	fopen_s(&cm, "mcg.vol", "rb");
+//	fread(buffer, 1, 32 * 55842, cm);
+//	fclose(cm);
+//
+//
+//
+//	int code = 0;
+//	FILE *fp;
+//	png_structp png_ptr;
+//	png_infop info_ptr;
+//	png_bytep row;
+//
+//	// Open file for writing (binary mode)
+//	static int i = 0;
+//	char filename[512];
+//	char title[] = "Edge of Panic";
+//	while (i < 100000)
+//	{
+//		sprintf_s(filename, "screenshot-%d.png", ++i);
+//		fopen_s(&fp, filename, "r");
+//		if (fp != nullptr)
+//		{
+//			fclose(fp);
+//			continue;
+//		}
+//		else
+//			fopen_s(&fp, filename, "wb");
+//		break;
+//	}
+//
+//
+//	if (fp == NULL)
+//	{
+//		fprintf(stderr, "Could not open file %s for writing\n", filename);
+//		code = 1;
+//		goto finalise;
+//	}
+//
+//	// Initialize write structure
+//	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+//	if (png_ptr == NULL)
+//	{
+//		fprintf(stderr, "Could not allocate write struct\n");
+//		code = 1;
+//		goto finalise;
+//	}
+//
+//	// Initialize info structure
+//	info_ptr = png_create_info_struct(png_ptr);
+//	if (info_ptr == NULL)
+//	{
+//		fprintf(stderr, "Could not allocate info struct\n");
+//		code = 1;
+//		goto finalise;
+//	}
+//
+//	// Setup Exception handling
+//	if (setjmp(png_jmpbuf(png_ptr))) {
+//		fprintf(stderr, "Error during png creation\n");
+//		code = 1;
+//		goto finalise;
+//	}
+//
+//	png_init_io(png_ptr, fp);
+//
+//	// Write header (8 bit colour depth)
+//	png_set_IHDR(png_ptr, info_ptr, width, height,
+//		8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
+//		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+//
+//	// Set title
+//	if (title != NULL) {
+//		png_text title_text;
+//		title_text.compression = PNG_TEXT_COMPRESSION_NONE;
+//		title_text.key = "Title";
+//		title_text.text = title;
+//		png_set_text(png_ptr, info_ptr, &title_text, 1);
+//	}
+//
+//	png_write_info(png_ptr, info_ptr);
+//
+//	// Allocate memory for one row (4 bytes per pixel - RGBA)
+//	row = (png_bytep)malloc(4 * width * sizeof(png_byte));
+//
+//	// Write image data
+//	uint pos = 0;
+//	uint rowpos = 0;
+//	//for (int y = height-1; y >= 0; --y)
+//
+//	for (int y = 0; y < height; ++y)
+//	{
+//		int offset = 64 + (y * 32) + ((y / 32) * MULTIPLIER * 0x400);
+//
+//		for (int m = 0; m < MULTIPLIER; ++m)
+//		{
+//			for (int x = 0; x < 32; ++x)
+//			{
+//				byte c = 0xBB;
+//
+//				if (offset < 55842 * 32 * 4)
+//					c = buffer[offset + x];
+//				else
+//					printf("");
+//
+//				Color color = get_color(c);
+//				row[rowpos++] = color.m_r;
+//				row[rowpos++] = color.m_g;
+//				row[rowpos++] = color.m_b;
+//				row[rowpos++] = color.m_a;
+//			}
+//			offset += 0x400;
+//		}
+//		png_write_row(png_ptr, row);
+//		rowpos = 0;
+//	}
+//
+//	// End write
+//	png_write_end(png_ptr, NULL);
+//
+//finalise:
+//	if (fp != NULL) fclose(fp);
+//	if (info_ptr != NULL) png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1);
+//	if (png_ptr != NULL) png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+//	if (row != NULL) free(row);
+//
+//	delete[] buffer;
+//}
 
 class Layout
 {
@@ -310,188 +311,188 @@ public:
 	}
 
 
-	void save_level_png()
-	{
-		static int filenr = 0;
-		if (num_floors == 0)
-			printf("");
-		for (int i = 0; i < num_floors; ++i)
-		{
-			char filename[256];
-			sprintf_s(filename, "./levels/%d_%s_%s_%d.png", filenr, name, description, i);
+	//void save_level_png()
+	//{
+	//	static int filenr = 0;
+	//	if (num_floors == 0)
+	//		printf("");
+	//	for (int i = 0; i < num_floors; ++i)
+	//	{
+	//		char filename[256];
+	//		sprintf_s(filename, "./levels/%d_%s_%s_%d.png", filenr, name, description, i);
 
-			for (uint pos = 0; pos < strlen(filename); ++pos)
-			{
-				if (filename[pos] == '|')
-					filename[pos] = '_';
-			}
+	//		for (uint pos = 0; pos < strlen(filename); ++pos)
+	//		{
+	//			if (filename[pos] == '|')
+	//				filename[pos] = '_';
+	//		}
 
-			save_png(m_floors[i], m_masks[i], width, height, filename, description);
+	//		save_png(m_floors[i], m_masks[i], width, height, filename, description);
 
-		}
-		++filenr;
-	}
+	//	}
+	//	++filenr;
+	//}
 
-	void save_png(byte* data, byte* maskdata, int width, int height, char* filename, char* title)
-	{
-		uint bytes_per_pixel = 4;
-
-		int code = 0;
-		FILE *fp;
-		png_structp png_ptr = nullptr;
-		png_infop info_ptr = nullptr;
-		png_bytep row = nullptr;
-
-		// Open file for writing (binary mode)
-		fopen_s(&fp, filename, "wb+");
-		if (fp == NULL)
-		{
-			fprintf(stderr, "Could not open file %s for writing\n", filename);
-			code = 1;
-			goto finalise;
-		}
-
-		// Initialize write structure
-		png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-		if (png_ptr == NULL)
-		{
-			fprintf(stderr, "Could not allocate write struct\n");
-			code = 1;
-			goto finalise;
-		}
-
-		// Initialize info structure
-		info_ptr = png_create_info_struct(png_ptr);
-		if (info_ptr == NULL)
-		{
-			fprintf(stderr, "Could not allocate info struct\n");
-			code = 1;
-			goto finalise;
-		}
-
-		// Setup Exception handling
-		if (setjmp(png_jmpbuf(png_ptr))) {
-			fprintf(stderr, "Error during png creation\n");
-			code = 1;
-			goto finalise;
-		}
-
-		png_init_io(png_ptr, fp);
-
-		// Write header (8 bit colour depth)
-		png_set_IHDR(png_ptr, info_ptr, width * 32, height * 32,
-			8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
-			PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-
-		// Set title
-		if (title != NULL) {
-			png_text title_text;
-			title_text.compression = PNG_TEXT_COMPRESSION_NONE;
-			title_text.key = "Title";
-			title_text.text = title;
-			png_set_text(png_ptr, info_ptr, &title_text, 1);
-		}
-
-		png_write_info(png_ptr, info_ptr);
-
-		// Allocate memory for one row (4 bytes per pixel - RGBA)
-		row = (png_bytep)malloc(4 * width * 32 * sizeof(png_byte));
-
-		// Write image data
-		uint pos = 0;
-		uint rowpos = 0;
-		//for (int y = height-1; y >= 0; --y)
-
-		char tsf[256];
-		sprintf_s(tsf, "MCG.VOL_/%d.SPR", m_layout);
-		int tilefilesize = get_file_size(tsf);
-		byte* buffer = new byte[tilefilesize];
-
-		FILE* cm = nullptr;
-		fopen_s(&cm, tsf, "rb");
-		fread(buffer, 1, tilefilesize, cm);
-		fclose(cm);
-		byte* tile_table = buffer;
-
-		for (int y = 0; y < height; ++y)
-		{
-			for (uint line = 0; line < 32; ++line)
-			{
-				for (int x = 0; x < width; ++x)
-				{
-					byte tile = data[y * width + x];
-					byte mask = maskdata[y * width + x];
-					int offset = (0x400 * tile) + (line * 32);
-					byte* pixeloffset = tile_table + offset;
-					for (uint pixel = 0; pixel < 32; ++pixel)
-					{
-						byte c = 0xBB;
-						if (offset < tilefilesize)
-							c = pixeloffset[pixel];
-
-						//Color color = get_color(c);
-						Color color = m_palette[c >> 4];
-					#ifdef SHOW_TRIGGERS
-						if (mask != 0)
-						{
-							color.m_r = 255 - color.m_r;
-							color.m_g = 255 - color.m_g;
-							color.m_b = 255 - color.m_b;
-						}
-					#endif 
-#define RENDER_GRID
-#ifdef RENDER_GRID
-						if (pixel == 0 || line == 0)
-						{
-							color.m_r = 0;
-							color.m_g = 0;
-							color.m_b = 0;
-						}
-#endif 
-					#ifdef DEBUG_HEX_CHARS
-						// Debug hex chars! These are 3 by 5 character
-						if (pixel < (CHAR_WIDTH*2) && line < CHAR_HEIGHT) // Tile byte
-						{
-							byte val = pixel < CHAR_WIDTH ? tile >> 4 : tile & 0x0F;
-							char* char_array = get_char_data(val);
-							int x = pixel % CHAR_WIDTH;
-							int mult = 0xFF;
-							int colval = char_array[line * CHAR_WIDTH + x] * mult;
-							color = get_color(colval);
-						}
-						else if (pixel < (CHAR_WIDTH * 4) && line < CHAR_HEIGHT) // Mask byte
-						{
-							int realpixel = pixel - CHAR_WIDTH * 2;
-							byte val = realpixel < CHAR_WIDTH ? mask >> 4 : mask & 0x0F;
-							char* char_array = get_char_data(val);
-							int x = pixel % CHAR_WIDTH;
-							int mult = 0xEE;
-							if (mask != 0)
-								mult = 0xAA;
-							color = get_color(char_array[line * CHAR_WIDTH + x] * mult);
-						}
-					#endif //  DEBUG_HEX_CHARS
-
-						row[rowpos++] = color.m_r;
-						row[rowpos++] = color.m_g;
-						row[rowpos++] = color.m_b;
-						row[rowpos++] = color.m_a;
-					}
-				}
-				png_write_row(png_ptr, row);
-				rowpos = 0;
-			}
-		}
-		delete[] buffer;
-		// End write
-		png_write_end(png_ptr, NULL);
-
-	finalise:
-		if (fp != NULL) fclose(fp);
-		if (info_ptr != NULL) png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1);
-		if (png_ptr != NULL) png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
-		if (row != NULL) free(row);
-	}
+//	void save_png(byte* data, byte* maskdata, int width, int height, char* filename, char* title)
+//	{
+//		uint bytes_per_pixel = 4;
+//
+//		int code = 0;
+//		FILE *fp;
+//		png_structp png_ptr = nullptr;
+//		png_infop info_ptr = nullptr;
+//		png_bytep row = nullptr;
+//
+//		// Open file for writing (binary mode)
+//		fopen_s(&fp, filename, "wb+");
+//		if (fp == NULL)
+//		{
+//			fprintf(stderr, "Could not open file %s for writing\n", filename);
+//			code = 1;
+//			goto finalise;
+//		}
+//
+//		// Initialize write structure
+//		png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+//		if (png_ptr == NULL)
+//		{
+//			fprintf(stderr, "Could not allocate write struct\n");
+//			code = 1;
+//			goto finalise;
+//		}
+//
+//		// Initialize info structure
+//		info_ptr = png_create_info_struct(png_ptr);
+//		if (info_ptr == NULL)
+//		{
+//			fprintf(stderr, "Could not allocate info struct\n");
+//			code = 1;
+//			goto finalise;
+//		}
+//
+//		// Setup Exception handling
+//		if (setjmp(png_jmpbuf(png_ptr))) {
+//			fprintf(stderr, "Error during png creation\n");
+//			code = 1;
+//			goto finalise;
+//		}
+//
+//		png_init_io(png_ptr, fp);
+//
+//		// Write header (8 bit colour depth)
+//		png_set_IHDR(png_ptr, info_ptr, width * 32, height * 32,
+//			8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
+//			PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+//
+//		// Set title
+//		if (title != NULL) {
+//			png_text title_text;
+//			title_text.compression = PNG_TEXT_COMPRESSION_NONE;
+//			title_text.key = "Title";
+//			title_text.text = title;
+//			png_set_text(png_ptr, info_ptr, &title_text, 1);
+//		}
+//
+//		png_write_info(png_ptr, info_ptr);
+//
+//		// Allocate memory for one row (4 bytes per pixel - RGBA)
+//		row = (png_bytep)malloc(4 * width * 32 * sizeof(png_byte));
+//
+//		// Write image data
+//		uint pos = 0;
+//		uint rowpos = 0;
+//		//for (int y = height-1; y >= 0; --y)
+//
+//		char tsf[256];
+//		sprintf_s(tsf, "MCG.VOL_/%d.SPR", m_layout);
+//		int tilefilesize = get_file_size(tsf);
+//		byte* buffer = new byte[tilefilesize];
+//
+//		FILE* cm = nullptr;
+//		fopen_s(&cm, tsf, "rb");
+//		fread(buffer, 1, tilefilesize, cm);
+//		fclose(cm);
+//		byte* tile_table = buffer;
+//
+//		for (int y = 0; y < height; ++y)
+//		{
+//			for (uint line = 0; line < 32; ++line)
+//			{
+//				for (int x = 0; x < width; ++x)
+//				{
+//					byte tile = data[y * width + x];
+//					byte mask = maskdata[y * width + x];
+//					int offset = (0x400 * tile) + (line * 32);
+//					byte* pixeloffset = tile_table + offset;
+//					for (uint pixel = 0; pixel < 32; ++pixel)
+//					{
+//						byte c = 0xBB;
+//						if (offset < tilefilesize)
+//							c = pixeloffset[pixel];
+//
+//						//Color color = get_color(c);
+//						Color color = m_palette[c >> 4];
+//					#ifdef SHOW_TRIGGERS
+//						if (mask != 0)
+//						{
+//							color.m_r = 255 - color.m_r;
+//							color.m_g = 255 - color.m_g;
+//							color.m_b = 255 - color.m_b;
+//						}
+//					#endif 
+//#define RENDER_GRID
+//#ifdef RENDER_GRID
+//						if (pixel == 0 || line == 0)
+//						{
+//							color.m_r = 0;
+//							color.m_g = 0;
+//							color.m_b = 0;
+//						}
+//#endif 
+//					#ifdef DEBUG_HEX_CHARS
+//						// Debug hex chars! These are 3 by 5 character
+//						if (pixel < (CHAR_WIDTH*2) && line < CHAR_HEIGHT) // Tile byte
+//						{
+//							byte val = pixel < CHAR_WIDTH ? tile >> 4 : tile & 0x0F;
+//							char* char_array = get_char_data(val);
+//							int x = pixel % CHAR_WIDTH;
+//							int mult = 0xFF;
+//							int colval = char_array[line * CHAR_WIDTH + x] * mult;
+//							color = get_color(colval);
+//						}
+//						else if (pixel < (CHAR_WIDTH * 4) && line < CHAR_HEIGHT) // Mask byte
+//						{
+//							int realpixel = pixel - CHAR_WIDTH * 2;
+//							byte val = realpixel < CHAR_WIDTH ? mask >> 4 : mask & 0x0F;
+//							char* char_array = get_char_data(val);
+//							int x = pixel % CHAR_WIDTH;
+//							int mult = 0xEE;
+//							if (mask != 0)
+//								mult = 0xAA;
+//							color = get_color(char_array[line * CHAR_WIDTH + x] * mult);
+//						}
+//					#endif //  DEBUG_HEX_CHARS
+//
+//						row[rowpos++] = color.m_r;
+//						row[rowpos++] = color.m_g;
+//						row[rowpos++] = color.m_b;
+//						row[rowpos++] = color.m_a;
+//					}
+//				}
+//				png_write_row(png_ptr, row);
+//				rowpos = 0;
+//			}
+//		}
+//		delete[] buffer;
+//		// End write
+//		png_write_end(png_ptr, NULL);
+//
+//	finalise:
+//		if (fp != NULL) fclose(fp);
+//		if (info_ptr != NULL) png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1);
+//		if (png_ptr != NULL) png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+//		if (row != NULL) free(row);
+//	}
 
 	void dump_level_data()
 	{
@@ -637,7 +638,7 @@ void parse_med_vol()
 		Layout l(data + start_offset, block_length);
 		l.parse_data();
 		//l.dump_level_data();
-		l.save_level_png();
+	//	l.save_level_png();
 		//l.save_chunks();
 		layouts.push_back(l);
 		
@@ -651,6 +652,7 @@ void parse_med_vol()
 void dump_vol_file(const std::string& file, const std::string& extension)
 {
 	FILE* fp = nullptr;
+	printf("Opening %s\n", file.c_str());
 	fopen_s(&fp, file.c_str(), "rb");
 	if (!fp)
 		return;
@@ -699,10 +701,13 @@ void dump_vol_file(const std::string& file, const std::string& extension)
 			byte* buffer = new byte[length];
 			fread(buffer, 1, length, fp);
 
-			char destfilename[256];
-			sprintf_s(destfilename, "%d.%s", o, extension.c_str());
+			char destfilename[512];
+
+			sprintf(destfilename, "%s\\%d.%s", dir.c_str(), o, extension.c_str());
+			printf("Writing %s\n", destfilename);
 			FILE* output = nullptr;
 			fopen_s(&output, destfilename, "wb+");
+			
 			if (output)
 			{
 				fwrite(buffer, 1, length, output);
@@ -732,282 +737,282 @@ int get_file_size(const std::string& file)
 	return size;
 }
 
-void convert_mcg_to_png()
-{
-	std::vector<std::string> mcg_files;
-	mcg_files.push_back("MCG.VOL_/1.GC");
-	mcg_files.push_back("MCG.VOL_/2.GC");
-	mcg_files.push_back("MCG.VOL_/3.GC");
-	mcg_files.push_back("MCG.VOL_/4.GC");
-	mcg_files.push_back("MCG.VOL_/5.GC");
-	mcg_files.push_back("MCG.VOL_/6.GC");
-	mcg_files.push_back("MCG.VOL_/7.GC");
-	mcg_files.push_back("MCG.VOL_/8.GC");
-	mcg_files.push_back("MCG.VOL_/9.GC");
-	mcg_files.push_back("MCG.VOL_/10.GC");
-	mcg_files.push_back("MCG.VOL_/11.GC");
-	mcg_files.push_back("MCG.VOL_/12.GC");
-	mcg_files.push_back("MCG.VOL_/13.GC");
-	mcg_files.push_back("MCG.VOL_/14.GC");
-
-	for (int i = 0; i < mcg_files.size(); ++i)
-	{
-		int size = get_file_size(mcg_files[i]);
-		if (size <= 0)
-			continue;
-
-		int MULTIPLIER = 40;
-
-		int num_tiles = size / 32 / 32;
-		int num_cols = MULTIPLIER;
-		int num_rows = num_tiles / num_cols;
-
-		if (num_tiles % MULTIPLIER != 0)
-			num_rows++;
-
-
-		int width = 32 * num_cols;
-		int height = 32 * num_rows;
-
-		uint bytes_per_pixel = 4;
-		byte* buffer = new byte[size];
-
-		FILE* cm = nullptr;
-		fopen_s(&cm, mcg_files[i].c_str(), "rb");
-		fread(buffer, 1, size, cm);
-		fclose(cm);
-
-
-
-		int code = 0;
-		FILE *fp = nullptr;
-		png_structp png_ptr = nullptr;
-		png_infop info_ptr = nullptr;
-		png_bytep row = nullptr;
-
-		// Open file for writing (binary mode)
-		std::string output_filename = mcg_files[i] + std::string(".png");
-		char title[] = "Edge of Panic";
-		fopen_s(&fp, output_filename.c_str(), "wb");
-
-		if (fp == NULL)
-		{
-			fprintf(stderr, "Could not open file %s for writing\n", output_filename.c_str());
-			code = 1;
-			goto finalise;
-		}
-
-		// Initialize write structure
-		png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-		if (png_ptr == NULL)
-		{
-			fprintf(stderr, "Could not allocate write struct\n");
-			code = 1;
-			goto finalise;
-		}
-
-		// Initialize info structure
-		info_ptr = png_create_info_struct(png_ptr);
-		if (info_ptr == NULL)
-		{
-			fprintf(stderr, "Could not allocate info struct\n");
-			code = 1;
-			goto finalise;
-		}
-
-		// Setup Exception handling
-		if (setjmp(png_jmpbuf(png_ptr))) {
-			fprintf(stderr, "Error during png creation\n");
-			code = 1;
-			goto finalise;
-		}
-
-		png_init_io(png_ptr, fp);
-
-		// Write header (8 bit colour depth)
-		png_set_IHDR(png_ptr, info_ptr, width, height,
-			8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
-			PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-
-		// Set title
-		if (title != NULL) {
-			png_text title_text;
-			title_text.compression = PNG_TEXT_COMPRESSION_NONE;
-			title_text.key = "Title";
-			title_text.text = title;
-			png_set_text(png_ptr, info_ptr, &title_text, 1);
-		}
-
-		png_write_info(png_ptr, info_ptr);
-
-		// Allocate memory for one row (4 bytes per pixel - RGBA)
-		row = (png_bytep)malloc(4 * width * sizeof(png_byte));
-
-		// Write image data
-		uint pos = 0;
-		uint rowpos = 0;
-		//for (int y = height-1; y >= 0; --y)
-
-		for (int y = 0; y < height; ++y)
-		{
-			int offset = (y * 32) + ((y / 32) * MULTIPLIER * 0x400);
-
-			for (int m = 0; m < MULTIPLIER; ++m)
-			{
-				for (int x = 0; x < 32; ++x)
-				{
-					byte c = 0xBB;
-
-					if (offset < size)
-						c = buffer[offset + x];
-					else
-						printf("");
-
-					Color color = get_color(c);
-					row[rowpos++] = color.m_r;
-					row[rowpos++] = color.m_g;
-					row[rowpos++] = color.m_b;
-					row[rowpos++] = color.m_a;
-				}
-				offset += 0x400;
-			}
-			png_write_row(png_ptr, row);
-			rowpos = 0;
-		}
-
-		// End write
-		png_write_end(png_ptr, NULL);
-
-	finalise:
-		if (fp != NULL) fclose(fp);
-		if (info_ptr != NULL) png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1);
-		if (png_ptr != NULL) png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
-		if (row != NULL) free(row);
-
-		delete[] buffer;
-	}
-}
-
-
-void convert_gc_to_png(const std::string& gcfilename)
-{
-	int size = get_file_size(gcfilename);
-	if (size <= 0)
-		return;
-
-	int width = 590;
-	int height = 360;
-
-	uint bytes_per_pixel = 4;
-	byte* buffer = new byte[size];
-
-	FILE* cm = nullptr;
-	fopen_s(&cm, gcfilename.c_str(), "rb");
-	fread(buffer, 1, size, cm);
-	fclose(cm);
-
-	int code = 0;
-	FILE *fp = nullptr;
-	png_structp png_ptr = nullptr;
-	png_infop info_ptr = nullptr;
-	png_bytep row = nullptr;
-
-	// Open file for writing (binary mode)
-	std::string output_filename = gcfilename + std::string(".png");
-	char title[] = "Edge of Panic";
-	fopen_s(&fp, output_filename.c_str(), "wb");
-
-	if (fp == NULL)
-	{
-		fprintf(stderr, "Could not open file %s for writing\n", output_filename.c_str());
-		code = 1;
-		goto finalise;
-	}
-
-	// Initialize write structure
-	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	if (png_ptr == NULL)
-	{
-		fprintf(stderr, "Could not allocate write struct\n");
-		code = 1;
-		goto finalise;
-	}
-
-	// Initialize info structure
-	info_ptr = png_create_info_struct(png_ptr);
-	if (info_ptr == NULL)
-	{
-		fprintf(stderr, "Could not allocate info struct\n");
-		code = 1;
-		goto finalise;
-	}
-
-	// Setup Exception handling
-	if (setjmp(png_jmpbuf(png_ptr))) {
-		fprintf(stderr, "Error during png creation\n");
-		code = 1;
-		goto finalise;
-	}
-
-	png_init_io(png_ptr, fp);
-
-	// Write header (8 bit colour depth)
-	png_set_IHDR(png_ptr, info_ptr, width, height,
-		8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
-		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
-
-	// Set title
-	if (title != NULL) {
-		png_text title_text;
-		title_text.compression = PNG_TEXT_COMPRESSION_NONE;
-		title_text.key = "Title";
-		title_text.text = title;
-		png_set_text(png_ptr, info_ptr, &title_text, 1);
-	}
-
-	png_write_info(png_ptr, info_ptr);
-
-	// Allocate memory for one row (4 bytes per pixel - RGBA)
-	row = (png_bytep)malloc(4 * width * sizeof(png_byte));
-
-	// Write image data
-	uint pos = 0;
-	uint rowpos = 0;
-	//for (int y = height-1; y >= 0; --y)
-
-	int position = 0;
-	for (int y = 0; y < height; ++y)
-	{
-		for (int x = 0; x < width; ++x)
-		{
-			byte c = 0xBB;
-
-			if (position < size)
-				c = buffer[position++];
-			else
-				printf("");
-
-			Color color = Color(c,c,c);
-			row[rowpos++] = color.m_r;
-			row[rowpos++] = color.m_g;
-			row[rowpos++] = color.m_b;
-			row[rowpos++] = color.m_a;
-		}
-		png_write_row(png_ptr, row);
-		rowpos = 0;
-	}
-
-	// End write
-	png_write_end(png_ptr, NULL);
-
-finalise:
-	if (fp != NULL) fclose(fp);
-	if (info_ptr != NULL) png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1);
-	if (png_ptr != NULL) png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
-	if (row != NULL) free(row);
-
-	delete[] buffer;
-}
+//void convert_mcg_to_png()
+//{
+//	std::vector<std::string> mcg_files;
+//	mcg_files.push_back("MCG.VOL_/1.GC");
+//	mcg_files.push_back("MCG.VOL_/2.GC");
+//	mcg_files.push_back("MCG.VOL_/3.GC");
+//	mcg_files.push_back("MCG.VOL_/4.GC");
+//	mcg_files.push_back("MCG.VOL_/5.GC");
+//	mcg_files.push_back("MCG.VOL_/6.GC");
+//	mcg_files.push_back("MCG.VOL_/7.GC");
+//	mcg_files.push_back("MCG.VOL_/8.GC");
+//	mcg_files.push_back("MCG.VOL_/9.GC");
+//	mcg_files.push_back("MCG.VOL_/10.GC");
+//	mcg_files.push_back("MCG.VOL_/11.GC");
+//	mcg_files.push_back("MCG.VOL_/12.GC");
+//	mcg_files.push_back("MCG.VOL_/13.GC");
+//	mcg_files.push_back("MCG.VOL_/14.GC");
+//
+//	for (int i = 0; i < mcg_files.size(); ++i)
+//	{
+//		int size = get_file_size(mcg_files[i]);
+//		if (size <= 0)
+//			continue;
+//
+//		int MULTIPLIER = 40;
+//
+//		int num_tiles = size / 32 / 32;
+//		int num_cols = MULTIPLIER;
+//		int num_rows = num_tiles / num_cols;
+//
+//		if (num_tiles % MULTIPLIER != 0)
+//			num_rows++;
+//
+//
+//		int width = 32 * num_cols;
+//		int height = 32 * num_rows;
+//
+//		uint bytes_per_pixel = 4;
+//		byte* buffer = new byte[size];
+//
+//		FILE* cm = nullptr;
+//		fopen_s(&cm, mcg_files[i].c_str(), "rb");
+//		fread(buffer, 1, size, cm);
+//		fclose(cm);
+//
+//
+//
+//		int code = 0;
+//		FILE *fp = nullptr;
+//		png_structp png_ptr = nullptr;
+//		png_infop info_ptr = nullptr;
+//		png_bytep row = nullptr;
+//
+//		// Open file for writing (binary mode)
+//		std::string output_filename = mcg_files[i] + std::string(".png");
+//		char title[] = "Edge of Panic";
+//		fopen_s(&fp, output_filename.c_str(), "wb");
+//
+//		if (fp == NULL)
+//		{
+//			fprintf(stderr, "Could not open file %s for writing\n", output_filename.c_str());
+//			code = 1;
+//			goto finalise;
+//		}
+//
+//		// Initialize write structure
+//		png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+//		if (png_ptr == NULL)
+//		{
+//			fprintf(stderr, "Could not allocate write struct\n");
+//			code = 1;
+//			goto finalise;
+//		}
+//
+//		// Initialize info structure
+//		info_ptr = png_create_info_struct(png_ptr);
+//		if (info_ptr == NULL)
+//		{
+//			fprintf(stderr, "Could not allocate info struct\n");
+//			code = 1;
+//			goto finalise;
+//		}
+//
+//		// Setup Exception handling
+//		if (setjmp(png_jmpbuf(png_ptr))) {
+//			fprintf(stderr, "Error during png creation\n");
+//			code = 1;
+//			goto finalise;
+//		}
+//
+//		png_init_io(png_ptr, fp);
+//
+//		// Write header (8 bit colour depth)
+//		png_set_IHDR(png_ptr, info_ptr, width, height,
+//			8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
+//			PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+//
+//		// Set title
+//		if (title != NULL) {
+//			png_text title_text;
+//			title_text.compression = PNG_TEXT_COMPRESSION_NONE;
+//			title_text.key = "Title";
+//			title_text.text = title;
+//			png_set_text(png_ptr, info_ptr, &title_text, 1);
+//		}
+//
+//		png_write_info(png_ptr, info_ptr);
+//
+//		// Allocate memory for one row (4 bytes per pixel - RGBA)
+//		row = (png_bytep)malloc(4 * width * sizeof(png_byte));
+//
+//		// Write image data
+//		uint pos = 0;
+//		uint rowpos = 0;
+//		//for (int y = height-1; y >= 0; --y)
+//
+//		for (int y = 0; y < height; ++y)
+//		{
+//			int offset = (y * 32) + ((y / 32) * MULTIPLIER * 0x400);
+//
+//			for (int m = 0; m < MULTIPLIER; ++m)
+//			{
+//				for (int x = 0; x < 32; ++x)
+//				{
+//					byte c = 0xBB;
+//
+//					if (offset < size)
+//						c = buffer[offset + x];
+//					else
+//						printf("");
+//
+//					Color color = get_color(c);
+//					row[rowpos++] = color.m_r;
+//					row[rowpos++] = color.m_g;
+//					row[rowpos++] = color.m_b;
+//					row[rowpos++] = color.m_a;
+//				}
+//				offset += 0x400;
+//			}
+//			png_write_row(png_ptr, row);
+//			rowpos = 0;
+//		}
+//
+//		// End write
+//		png_write_end(png_ptr, NULL);
+//
+//	finalise:
+//		if (fp != NULL) fclose(fp);
+//		if (info_ptr != NULL) png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1);
+//		if (png_ptr != NULL) png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+//		if (row != NULL) free(row);
+//
+//		delete[] buffer;
+//	}
+//}
+//
+//
+//void convert_gc_to_png(const std::string& gcfilename)
+//{
+//	int size = get_file_size(gcfilename);
+//	if (size <= 0)
+//		return;
+//
+//	int width = 590;
+//	int height = 360;
+//
+//	uint bytes_per_pixel = 4;
+//	byte* buffer = new byte[size];
+//
+//	FILE* cm = nullptr;
+//	fopen_s(&cm, gcfilename.c_str(), "rb");
+//	fread(buffer, 1, size, cm);
+//	fclose(cm);
+//
+//	int code = 0;
+//	FILE *fp = nullptr;
+//	png_structp png_ptr = nullptr;
+//	png_infop info_ptr = nullptr;
+//	png_bytep row = nullptr;
+//
+//	// Open file for writing (binary mode)
+//	std::string output_filename = gcfilename + std::string(".png");
+//	char title[] = "Edge of Panic";
+//	fopen_s(&fp, output_filename.c_str(), "wb");
+//
+//	if (fp == NULL)
+//	{
+//		fprintf(stderr, "Could not open file %s for writing\n", output_filename.c_str());
+//		code = 1;
+//		goto finalise;
+//	}
+//
+//	// Initialize write structure
+//	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+//	if (png_ptr == NULL)
+//	{
+//		fprintf(stderr, "Could not allocate write struct\n");
+//		code = 1;
+//		goto finalise;
+//	}
+//
+//	// Initialize info structure
+//	info_ptr = png_create_info_struct(png_ptr);
+//	if (info_ptr == NULL)
+//	{
+//		fprintf(stderr, "Could not allocate info struct\n");
+//		code = 1;
+//		goto finalise;
+//	}
+//
+//	// Setup Exception handling
+//	if (setjmp(png_jmpbuf(png_ptr))) {
+//		fprintf(stderr, "Error during png creation\n");
+//		code = 1;
+//		goto finalise;
+//	}
+//
+//	png_init_io(png_ptr, fp);
+//
+//	// Write header (8 bit colour depth)
+//	png_set_IHDR(png_ptr, info_ptr, width, height,
+//		8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
+//		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+//
+//	// Set title
+//	if (title != NULL) {
+//		png_text title_text;
+//		title_text.compression = PNG_TEXT_COMPRESSION_NONE;
+//		title_text.key = "Title";
+//		title_text.text = title;
+//		png_set_text(png_ptr, info_ptr, &title_text, 1);
+//	}
+//
+//	png_write_info(png_ptr, info_ptr);
+//
+//	// Allocate memory for one row (4 bytes per pixel - RGBA)
+//	row = (png_bytep)malloc(4 * width * sizeof(png_byte));
+//
+//	// Write image data
+//	uint pos = 0;
+//	uint rowpos = 0;
+//	//for (int y = height-1; y >= 0; --y)
+//
+//	int position = 0;
+//	for (int y = 0; y < height; ++y)
+//	{
+//		for (int x = 0; x < width; ++x)
+//		{
+//			byte c = 0xBB;
+//
+//			if (position < size)
+//				c = buffer[position++];
+//			else
+//				printf("");
+//
+//			Color color = Color(c,c,c);
+//			row[rowpos++] = color.m_r;
+//			row[rowpos++] = color.m_g;
+//			row[rowpos++] = color.m_b;
+//			row[rowpos++] = color.m_a;
+//		}
+//		png_write_row(png_ptr, row);
+//		rowpos = 0;
+//	}
+//
+//	// End write
+//	png_write_end(png_ptr, NULL);
+//
+//finalise:
+//	if (fp != NULL) fclose(fp);
+//	if (info_ptr != NULL) png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1);
+//	if (png_ptr != NULL) png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+//	if (row != NULL) free(row);
+//
+//	delete[] buffer;
+//}
 
 void dump_pcm_files()
 {
@@ -1208,16 +1213,16 @@ void dmg_test()
 int main(int argc, char* argv[])
 {
 	//dmg_test();
-	//dump_vol_files();
+	dump_vol_files();
 	//parse_med_vol();
-	//dump_pcm_files();
+	dump_pcm_files();
 	//dump_vol_file("MED.VOL", "MD");
 	//dump_vol_file("MAP.VOL", "GC");
 	//dump_vol_file("PIC2.VOL", "GC");
 	//dump_vol_file("PIC3.VOL", "GC");
 	//dump_vol_file("DAT.VOL", "DAT");
 	//dump_vol_file("ECG.VOL", "GFX");
-	dump_vol_file("EMI.VOL", "EM");
+	//dump_vol_file("EMI.VOL", "EM");
 	//dump_vol_file("ENM.VOL", "GFX");
 	//dump_vol_file("ICP.VOL", "ICP");
 	//dump_vol_file("CODE.VOL", "COD");

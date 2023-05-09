@@ -24,6 +24,7 @@ cmwriter/cmwriter/Debug/
 cmwriter/cmwriter/Release/
 cmwriter/cmwriter/Debug/
 cmwriter/Debug/
+cmwriter/Release/
 emidump/Debug/
 emidump/.vs/
 cmwriter/.vs/
@@ -37,5 +38,5 @@ gcdebugger/.vs/
 gcdebugger/debug/
 gcdebugger/release/
 gcparse/.vs
-gcparse/x64
+gcparse/x64/
 gcparse/LOGCPU_pic3_cdefbcde.TXT

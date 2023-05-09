@@ -3,13 +3,26 @@
 #include <fstream>
 #include <vector>
 #include <filesystem>
+#include <sstream>
 
 /*
 Original code by dascandy, reverse engineering work colab between BlackStar & dascandy / Edge of Panic
 */
 
+struct Chunk {
+    uint32_t start;
+    uint32_t end;
+    uint16_t id;
+
+    uint32_t length() const
+    {
+        return end - start;
+    }
+};
+
 struct ImageDecoder {
   uint8_t* in;
+  uint32_t length;
   uint8_t* out;
   uint8_t* lastline;
   uint8_t buffer[4096];
@@ -228,48 +241,98 @@ const uint8_t defaultpal[] =
  0xcc, 0x0c, 0x0f, 0x00, 0xf0, 0x00, 0xff, 0x00, 0x00, 0x0f, 0x0f, 0x0f, 0xf0, 0x0f, 0xff, 0x0f,
 };
 
-int main(int, char** argv) {
+int main(int argc, char** argv) {
   std::vector<uint8_t> in;
   std::vector<uint8_t> line1, line2;
   std::vector<uint8_t> bmp;
   line1.resize(0x280);
-  in.resize(std::filesystem::file_size(argv[1]));
-  std::ifstream(argv[1], std::ios::binary).read((char*)in.data(), in.size());
-  std::ofstream out(argv[2], std::ios::binary);
-  out.write((const char*)bmpheader, sizeof(bmpheader));
+  
+  //char* file = argv[1];
+  //char* dest = argv[1];
+  const char* file = "33.GC";
+  
+  in.resize(std::filesystem::file_size(file));
+  
+  std::string output = file;
+  
 
-  ImageDecoder dec;
-  dec.in = in.data() + 0x42;
-  dec.out = line1.data();
-  dec.lastline = line1.data() + 0x140;
-  dec.start();
-  uint16_t width = 592 / 8;
-  dec.width = 80;
-  for (size_t n = 0; n < 360; n++) {
-    dec.offset = 0;
-    while (dec.offset < dec.width) {
-      dec.handle_one();
-    }
-    std::vector<uint8_t> linebuf;
-    for (size_t n = 0; n < width; n++) {
-      for (int b = 7; b >= 0; b--) {
-        uint8_t val = 0;
-        for (size_t x = 0; x < 4; x++) {
-          if (dec.out[n*4+x] & (1 << b)) val |= (1 << x);
-        }
-        uint8_t color1 = in[val * 2 + 0x10];
-        uint8_t color2 = in[val * 2 + 0x11];
+  std::ifstream gc_in(file, std::ios::binary);
+  if (!gc_in.is_open())
+      return -1;
 
-        linebuf.push_back((color1 & 0xF) << 4);
-        linebuf.push_back(color2 << 4);
-        linebuf.push_back(color1 & 0xF0);
-        
-      }
-    }
-    std::reverse(linebuf.begin(), linebuf.end());
-    bmp.insert(bmp.end(), linebuf.begin(), linebuf.end());
-    std::swap(dec.out, dec.lastline);
+  gc_in.read((char*)in.data(), in.size());
+  bool haspal = *(in.data() + 0x04) == 0x80;
+  uint16_t num_chunks = *((uint16_t*)(in.data() + 0x08));
+  uint32_t chunk_table = haspal ? 0x30 : 0x10;
+
+  std::vector<Chunk> chunks;
+  for (uint16_t c = 0; c < num_chunks; ++c)
+  {
+      uint32_t start = *(uint32_t*)(in.data() + chunk_table + (sizeof(uint32_t) * c));
+      uint32_t end = *(uint32_t*)(in.data() + chunk_table + (sizeof(uint32_t) * (c + 1)));
+      Chunk chunk;
+      chunk.start = start;
+      chunk.end = end;
+      chunk.id = c;
+      chunks.push_back(chunk);
   }
-  std::reverse(bmp.begin(), bmp.end());
-  out.write((const char*)bmp.data(), bmp.size());
+
+
+  for (auto& chunk : chunks)
+  {
+      std::stringstream ss;
+
+      ss << output << "_" << chunk.id << ".BMP";
+      std::string outputfile = ss.str();
+
+      ImageDecoder dec;
+      dec.in = in.data() + chunk.start;
+      dec.length = chunk.length();
+      dec.out = line1.data();
+      dec.lastline = line1.data() + 0x140;
+      dec.start();
+      uint16_t width = 592 / 8;
+      dec.width = (*(in.data() + 0x3d) >> 1);
+      for (size_t n = 0; n < 360; n++) {
+          dec.offset = 0;
+          while (dec.offset < dec.width) {
+              dec.handle_one();
+          }
+          std::vector<uint8_t> linebuf;
+          for (size_t n = 0; n < width; n++) {
+              for (int b = 7; b >= 0; b--) {
+                  uint8_t val = 0;
+                  for (size_t x = 0; x < 4; x++) {
+                      if (dec.out[n * 4 + x] & (1 << b)) val |= (1 << x);
+                  }
+                  uint8_t color1;
+                  uint8_t color2;
+
+                  if (haspal)
+                  {
+                      color1 = in[val * 2 + 0x10];
+                      color2 = in[val * 2 + 0x11];
+                  }
+                  else
+                  {
+                      color1 = defaultpal[val * 2];
+                      color2 = defaultpal[(val * 2) + 1];
+                  }
+
+                  linebuf.push_back((color1 & 0xF) << 4);
+                  linebuf.push_back(color2 << 4);
+                  linebuf.push_back(color1 & 0xF0);
+
+              }
+          }
+          std::reverse(linebuf.begin(), linebuf.end());
+          bmp.insert(bmp.end(), linebuf.begin(), linebuf.end());
+          std::swap(dec.out, dec.lastline);
+      }
+      std::reverse(bmp.begin(), bmp.end());
+
+      std::ofstream out(outputfile, std::ios::binary);
+      out.write((const char*)bmpheader, sizeof(bmpheader));
+      out.write((const char*)bmp.data(), bmp.size());
+  }
 }
