@@ -304,7 +304,7 @@ int main(int argc, char** argv) {
 
 
       dec.width = (*(in.data() + 0x3d) >> 1);
-      uint16_t width = 592;
+      uint16_t width = 592 / 8;
 
       dec.start();
 
