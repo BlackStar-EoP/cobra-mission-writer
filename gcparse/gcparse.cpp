@@ -225,6 +225,7 @@ const uint8_t bmpheader[] = {0x42, 0x4d, 0x0a, 0xc2, 0x09, 0x00, 0x00, 0x00, 0x0
 int main(int, char** argv) {
   std::vector<uint8_t> in;
   std::vector<uint8_t> line1, line2;
+  std::vector<uint8_t> bmp;
   line1.resize(0x280);
   in.resize(std::filesystem::file_size(argv[1]));
   std::ifstream(argv[1], std::ios::binary).read((char*)in.data(), in.size());
@@ -252,13 +253,15 @@ int main(int, char** argv) {
         }
         uint8_t color1 = in[val * 2 + 0x10];
         uint8_t color2 = in[val * 2 + 0x11];
-        linebuf.push_back((color1 & 0xF) << 4);
-        linebuf.push_back(color2 << 4);
+
         linebuf.push_back(color1 & 0xF0);
+        linebuf.push_back(color2 << 4);
+        linebuf.push_back((color1 & 0xF) << 4);
       }
     }
-    out.write((const char*)linebuf.data(), linebuf.size());
-//    out.write((const char*)dec.out, 296);
+    bmp.insert(bmp.end(), linebuf.begin(), linebuf.end());
     std::swap(dec.out, dec.lastline);
   }
+  std::reverse(bmp.begin(), bmp.end());
+  out.write((const char*)bmp.data(), bmp.size());
 }
