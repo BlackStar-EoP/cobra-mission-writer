@@ -44,8 +44,7 @@ struct ImageDecoder {
 
   bool endreached() const
   {
-      return false;
-      return current >= length;
+      return current > length;
 
   }
 
@@ -314,7 +313,6 @@ int main(int argc, char** argv) {
       dec.lastline = line1.data() + 0x140;
 
 
-      //dec.width = (*(in.data() + 0x3d) >> 1);
       dec.width = (*(in.data() + chunk.start + 0x05) >> 1);
       uint16_t width = 592 / 8;
 
@@ -322,18 +320,24 @@ int main(int argc, char** argv) {
 
       for (size_t n = 0; n < 360; n++) {
           dec.offset = 0;
-          while (dec.offset < dec.width) {
-              dec.handle_one();
+          
+          if (!dec.endreached())
+          {
+              while (dec.offset < dec.width) {
+                  dec.handle_one();
+              }
           }
 
-          if (dec.endreached())
-              break;
           std::vector<uint8_t> linebuf;
           for (size_t n = 0; n < width; n++) {
               for (int b = 7; b >= 0; b--) {
                   uint8_t val = 0;
-                  for (size_t x = 0; x < 4; x++) {
-                      if (dec.out[n * 4 + x] & (1 << b)) val |= (1 << x);
+
+                  if (!dec.endreached())
+                  {
+                      for (size_t x = 0; x < 4; x++) {
+                          if (dec.out[n * 4 + x] & (1 << b)) val |= (1 << x);
+                      }
                   }
                   uint8_t color1;
                   uint8_t color2;
