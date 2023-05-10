@@ -290,6 +290,8 @@ int main(int argc, char** argv) {
 
   for (auto& chunk : chunks)
   {
+      bmp.clear();
+
       std::stringstream ss;
 
       ss << output << "_" << chunk.id << ".BMP";
