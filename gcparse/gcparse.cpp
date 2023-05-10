@@ -23,6 +23,7 @@ struct Chunk {
 struct ImageDecoder {
   uint8_t* in;
   uint32_t length;
+  uint32_t current = 0;
   uint8_t* out;
   uint8_t* lastline;
   uint8_t buffer[4096];
@@ -34,19 +35,33 @@ struct ImageDecoder {
   uint8_t bxoffset = 0;
   uint16_t width = 0;
   static constexpr int deltas[] = { -1, -2, -4, -8, 1, 0 };
+  
+  uint8_t readbyte()
+  {
+      current++;
+      return *in++;
+  }
+
+  bool endreached() const
+  {
+      return false;
+      return current >= length;
+
+  }
+
   uint8_t loadnibble() {
     if (hasNibble) {
       hasNibble = false;
       return (nibblebuffer >> 4);
     } else {
       hasNibble = true;
-      nibblebuffer = *in++;
+      nibblebuffer = readbyte();
       return nibblebuffer & 0xF;
     }
   }
   void start() {
-    bitbuffer = *in++;
-    bitbuffer |= (*in++) << 8;
+    bitbuffer = readbyte();
+    bitbuffer |= (readbyte()) << 8;
     bits = 16;
   }
   uint8_t getbit() {
@@ -54,8 +69,8 @@ struct ImageDecoder {
     bitbuffer = bitbuffer << 1;
     bits--;
     if (not bits) {
-      bitbuffer = *in++;
-      bitbuffer |= (*in++) << 8;
+      bitbuffer = readbyte();
+      bitbuffer |= (readbyte()) << 8;
       bits = 16;
     }
     return rv;
@@ -99,17 +114,17 @@ struct ImageDecoder {
       break;
     case CopyAndStore:
       printf("CopyAndStore %d\n", offset);
-      out[offset*4] = buffer[bxoffset*4] = *in++;
-      out[offset*4+1] = buffer[bxoffset*4+1] = *in++;
-      out[offset*4+2] = buffer[bxoffset*4+2] = *in++;
-      out[offset*4+3] = buffer[bxoffset*4+3] = *in++;
+      out[offset*4] = buffer[bxoffset*4] = readbyte();
+      out[offset*4+1] = buffer[bxoffset*4+1] = readbyte();
+      out[offset*4+2] = buffer[bxoffset*4+2] = readbyte();
+      out[offset*4+3] = buffer[bxoffset*4+3] = readbyte();
       bxoffset++;
       offset++;
       break;
     case CopyFromBxTable:
     {
       printf("CopyFromBxTable %d\n", offset);
-      uint8_t v = *in++;
+      uint8_t v = readbyte();
       out[offset*4] = buffer[v*4];
       out[offset*4+1] = buffer[v*4+1];
       out[offset*4+2] = buffer[v*4+2];
@@ -137,7 +152,7 @@ struct ImageDecoder {
       } else {
         for (size_t n = 0; n < 4; n++) {
           if ((v >> n) & 1) {
-            out[offset*4+n] = *in++;
+            out[offset*4+n] = readbyte();
           }
         }
         offset++;
@@ -149,7 +164,7 @@ struct ImageDecoder {
       uint8_t v = loadnibble();
       printf("CopyMoveTable %d %d\n", offset, v);
       if (v == 0) {
-        uint8_t count = *in++;
+        uint8_t count = readbyte();
         int delta = deltas[count >> 6];
         count = ((count & 0x3F) + 0x12);
         for (size_t n = 0; n < count; n++) {
@@ -160,7 +175,7 @@ struct ImageDecoder {
           offset++;
         }
       } else if (v == 15) {
-        uint8_t count = *in++;
+        uint8_t count = readbyte();
         if ((count & 0xC0) == 0) {
           count = ((count & 0x3F) + 0x12);
           for (size_t n = 0; n < count; n++) {
@@ -177,7 +192,7 @@ struct ImageDecoder {
       } else {
         for (size_t n = 0; n < 4; n++) {
           if ((v >> n) & 1) {
-            out[offset*4+n] = *in++;
+            out[offset*4+n] = readbyte();
           } else {
             out[offset*4+n] = out[offset*4+n - 4];
           }
@@ -310,6 +325,9 @@ int main(int argc, char** argv) {
           while (dec.offset < dec.width) {
               dec.handle_one();
           }
+
+          if (dec.endreached())
+              break;
           std::vector<uint8_t> linebuf;
           for (size_t n = 0; n < width; n++) {
               for (int b = 7; b >= 0; b--) {
