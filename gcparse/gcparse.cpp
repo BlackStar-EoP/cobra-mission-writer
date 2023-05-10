@@ -251,9 +251,6 @@ const uint8_t defaultpal[] =
 
 int main(int argc, char** argv) {
   std::vector<uint8_t> in;
-  std::vector<uint8_t> line1, line2;
-  std::vector<uint8_t> bmp;
-  line1.resize(0x280);
   
 #ifdef _DEBUG
   const char* file = "3.GC";
@@ -290,12 +287,9 @@ int main(int argc, char** argv) {
 
   for (auto& chunk : chunks)
   {
-      bmp.clear();
-
-      std::stringstream ss;
-
-      ss << output << "_" << chunk.id << ".BMP";
-      std::string outputfile = ss.str();
+      std::vector<uint8_t> line1, line2;
+      std::vector<uint8_t> bmp;
+      line1.resize(0x280);
 
       ImageDecoder dec;
       uint32_t offset = chunk.start + 10;
@@ -305,7 +299,8 @@ int main(int argc, char** argv) {
       dec.lastline = line1.data() + 0x140;
 
 
-      dec.width = (*(in.data() + 0x3d) >> 1);
+      //dec.width = (*(in.data() + 0x3d) >> 1);
+      dec.width = (*(in.data() + chunk.start + 0x05) >> 1);
       uint16_t width = 592 / 8;
 
       dec.start();
@@ -348,7 +343,11 @@ int main(int argc, char** argv) {
       }
       std::reverse(bmp.begin(), bmp.end());
 
+      std::stringstream ss;
+      ss << output << "_" << chunk.id << ".BMP";
+      std::string outputfile = ss.str();
       std::ofstream out(outputfile, std::ios::binary);
+
       out.write((const char*)bmpheader, sizeof(bmpheader));
       out.write((const char*)bmp.data(), bmp.size());
   }
