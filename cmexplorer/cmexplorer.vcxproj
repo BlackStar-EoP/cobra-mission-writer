@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7DD8A9C3-235B-3079-920D-9CC558CF9A98}</ProjectGuid>
+    <RootNamespace>cmexplorer</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.26100.0</WindowsTargetPlatformMinVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;" Label="Configuration">
+    <PlatformToolset>v143</PlatformToolset>
+    <OutputDirectory>release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>cmexplorer</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;" Label="Configuration">
+    <PlatformToolset>v143</PlatformToolset>
+    <OutputDirectory>debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>cmexplorer</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists(&apos;$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props&apos;)" />
+  </ImportGroup>
+  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists(&apos;$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props&apos;)" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\</OutDir>
+    <IntDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\</IntDir>
+    <TargetName Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">cmexplorer</TargetName>
+    <IgnoreImportLibrary Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">false</LinkIncremental>
+    <OutDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\</OutDir>
+    <IntDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\</IntDir>
+    <TargetName Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">cmexplorer</TargetName>
+    <IgnoreImportLibrary Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot;;C:\Qt\6.10.1\msvc2022_64\include;C:\Qt\6.10.1\msvc2022_64\include\QtWidgets;C:\Qt\6.10.1\msvc2022_64\include\QtGui;C:\Qt\6.10.1\msvc2022_64\include\QtCore;release;/include;c:\Qt\6.10.1\msvc2022_64\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr -utf-8 -w34100 -w34189 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;NDEBUG;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName></ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>C:\Qt\6.10.1\msvc2022_64\lib\Qt6Widgets.lib;C:\Qt\6.10.1\msvc2022_64\lib\Qt6Gui.lib;C:\Qt\6.10.1\msvc2022_64\lib\Qt6Core.lib;C:\Qt\6.10.1\msvc2022_64\lib\Qt6EntryPoint.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)\cmexplorer.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;NDEBUG;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot;;C:\Qt\6.10.1\msvc2022_64\include;C:\Qt\6.10.1\msvc2022_64\include\QtWidgets;C:\Qt\6.10.1\msvc2022_64\include\QtGui;C:\Qt\6.10.1\msvc2022_64\include\QtCore;debug;/include;c:\Qt\6.10.1\msvc2022_64\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr -utf-8 -w34100 -w34189 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>C:\Qt\6.10.1\msvc2022_64\lib\Qt6Widgetsd.lib;C:\Qt\6.10.1\msvc2022_64\lib\Qt6Guid.lib;C:\Qt\6.10.1\msvc2022_64\lib\Qt6Cored.lib;C:\Qt\6.10.1\msvc2022_64\lib\Qt6EntryPointd.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\cmexplorer.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="gcvolentry.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="spritevolentry.cpp" />
+    <ClCompile Include="volentry.cpp" />
+    <ClCompile Include="volfile.cpp" />
+    <ClCompile Include="volfilelistwidget.cpp" />
+    <ClCompile Include="volfilelistwidgetitem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gcvolentry.h" />
+    <CustomBuild Include="imagelabel.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">imagelabel.h;release\moc_predefs.h;c:\Qt\6.10.1\msvc2022_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">c:\Qt\6.10.1\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include &quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/release/moc_predefs.h&quot; -Ic:/Qt/6.10.1/msvc2022_64/mkspecs/win32-msvc -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer&quot; -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot; -IC:/Qt/6.10.1/msvc2022_64/include -IC:/Qt/6.10.1/msvc2022_64/include/QtWidgets -IC:/Qt/6.10.1/msvc2022_64/include/QtGui -IC:/Qt/6.10.1/msvc2022_64/include/QtCore -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\ATLMFC\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt&quot; imagelabel.h -o release\moc_imagelabel.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC imagelabel.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_imagelabel.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">imagelabel.h;debug\moc_predefs.h;c:\Qt\6.10.1\msvc2022_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">c:\Qt\6.10.1\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include &quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/debug/moc_predefs.h&quot; -Ic:/Qt/6.10.1/msvc2022_64/mkspecs/win32-msvc -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer&quot; -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot; -IC:/Qt/6.10.1/msvc2022_64/include -IC:/Qt/6.10.1/msvc2022_64/include/QtWidgets -IC:/Qt/6.10.1/msvc2022_64/include/QtGui -IC:/Qt/6.10.1/msvc2022_64/include/QtCore -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\ATLMFC\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt&quot; imagelabel.h -o debug\moc_imagelabel.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC imagelabel.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_imagelabel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="mainwindow.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">mainwindow.h;release\moc_predefs.h;c:\Qt\6.10.1\msvc2022_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">c:\Qt\6.10.1\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include &quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/release/moc_predefs.h&quot; -Ic:/Qt/6.10.1/msvc2022_64/mkspecs/win32-msvc -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer&quot; -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot; -IC:/Qt/6.10.1/msvc2022_64/include -IC:/Qt/6.10.1/msvc2022_64/include/QtWidgets -IC:/Qt/6.10.1/msvc2022_64/include/QtGui -IC:/Qt/6.10.1/msvc2022_64/include/QtCore -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\ATLMFC\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt&quot; mainwindow.h -o release\moc_mainwindow.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC mainwindow.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_mainwindow.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">mainwindow.h;debug\moc_predefs.h;c:\Qt\6.10.1\msvc2022_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">c:\Qt\6.10.1\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include &quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/debug/moc_predefs.h&quot; -Ic:/Qt/6.10.1/msvc2022_64/mkspecs/win32-msvc -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer&quot; -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot; -IC:/Qt/6.10.1/msvc2022_64/include -IC:/Qt/6.10.1/msvc2022_64/include/QtWidgets -IC:/Qt/6.10.1/msvc2022_64/include/QtGui -IC:/Qt/6.10.1/msvc2022_64/include/QtCore -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\ATLMFC\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt&quot; mainwindow.h -o debug\moc_mainwindow.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC mainwindow.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_mainwindow.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="spritevolentry.h" />
+    <ClInclude Include="volentry.h" />
+    <ClInclude Include="volfile.h" />
+    <CustomBuild Include="volfilelistwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">volfilelistwidget.h;release\moc_predefs.h;c:\Qt\6.10.1\msvc2022_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">c:\Qt\6.10.1\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include &quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/release/moc_predefs.h&quot; -Ic:/Qt/6.10.1/msvc2022_64/mkspecs/win32-msvc -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer&quot; -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot; -IC:/Qt/6.10.1/msvc2022_64/include -IC:/Qt/6.10.1/msvc2022_64/include/QtWidgets -IC:/Qt/6.10.1/msvc2022_64/include/QtGui -IC:/Qt/6.10.1/msvc2022_64/include/QtCore -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\ATLMFC\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt&quot; volfilelistwidget.h -o release\moc_volfilelistwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC volfilelistwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_volfilelistwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">volfilelistwidget.h;debug\moc_predefs.h;c:\Qt\6.10.1\msvc2022_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">c:\Qt\6.10.1\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include &quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/debug/moc_predefs.h&quot; -Ic:/Qt/6.10.1/msvc2022_64/mkspecs/win32-msvc -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer&quot; -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot; -IC:/Qt/6.10.1/msvc2022_64/include -IC:/Qt/6.10.1/msvc2022_64/include/QtWidgets -IC:/Qt/6.10.1/msvc2022_64/include/QtGui -IC:/Qt/6.10.1/msvc2022_64/include/QtCore -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\ATLMFC\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt&quot; volfilelistwidget.h -o debug\moc_volfilelistwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC volfilelistwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_volfilelistwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="volfilelistwidgetitem.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">volfilelistwidgetitem.h;release\moc_predefs.h;c:\Qt\6.10.1\msvc2022_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">c:\Qt\6.10.1\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include &quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/release/moc_predefs.h&quot; -Ic:/Qt/6.10.1/msvc2022_64/mkspecs/win32-msvc -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer&quot; -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot; -IC:/Qt/6.10.1/msvc2022_64/include -IC:/Qt/6.10.1/msvc2022_64/include/QtWidgets -IC:/Qt/6.10.1/msvc2022_64/include/QtGui -IC:/Qt/6.10.1/msvc2022_64/include/QtCore -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\ATLMFC\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt&quot; volfilelistwidgetitem.h -o release\moc_volfilelistwidgetitem.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC volfilelistwidgetitem.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_volfilelistwidgetitem.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">volfilelistwidgetitem.h;debug\moc_predefs.h;c:\Qt\6.10.1\msvc2022_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">c:\Qt\6.10.1\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include &quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/debug/moc_predefs.h&quot; -Ic:/Qt/6.10.1/msvc2022_64/mkspecs/win32-msvc -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer&quot; -I&quot;D:/Projects/Edge of Panic/cobra-mission-writer/cmexplorer/src&quot; -IC:/Qt/6.10.1/msvc2022_64/include -IC:/Qt/6.10.1/msvc2022_64/include/QtWidgets -IC:/Qt/6.10.1/msvc2022_64/include/QtGui -IC:/Qt/6.10.1/msvc2022_64/include/QtCore -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\ATLMFC\include&quot; -I&quot;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt&quot; volfilelistwidgetitem.h -o debug\moc_volfilelistwidgetitem.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC volfilelistwidgetitem.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_volfilelistwidgetitem.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="debug\moc_imagelabel.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_imagelabel.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_mainwindow.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_mainwindow.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">c:\Qt\6.10.1\msvc2022_64\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">cl -Bxc:\Qt\6.10.1\msvc2022_64\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zi -MDd -std:c++17 -utf-8 -W3 -w34100 -w34189 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E c:\Qt\6.10.1\msvc2022_64\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;debug\moc_predefs.h</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">Generate moc_predefs.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_predefs.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">c:\Qt\6.10.1\msvc2022_64\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">cl -Bxc:\Qt\6.10.1\msvc2022_64\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr -O2 -MD -std:c++17 -utf-8 -W3 -w34100 -w34189 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E c:\Qt\6.10.1\msvc2022_64\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;release\moc_predefs.h</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">Generate moc_predefs.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_predefs.h;%(Outputs)</Outputs>
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </CustomBuild>
+    <ClCompile Include="debug\moc_volfilelistwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_volfilelistwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_volfilelistwidgetitem.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_volfilelistwidgetitem.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

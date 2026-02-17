@@ -37,6 +37,10 @@ gcdebugger/.qmake.stash
 gcdebugger/.vs/
 gcdebugger/debug/
 gcdebugger/release/
+cmexplorer/.qmake.stash
+cmexplorer/.vs/
+cmexplorer/debug/
+cmexplorer/release/
 gcparse/.vs
 gcparse/x64/
 gcparse/LOGCPU_pic3_cdefbcde.TXT
