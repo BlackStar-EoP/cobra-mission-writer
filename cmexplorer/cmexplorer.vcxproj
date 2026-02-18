@@ -144,6 +144,7 @@
     <ClCompile Include="gcvolentry.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="medvolentry.cpp" />
     <ClCompile Include="spritevolentry.cpp" />
     <ClCompile Include="volentry.cpp" />
     <ClCompile Include="volfile.cpp" />
@@ -172,6 +173,7 @@
       <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC mainwindow.h</Message>
       <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_mainwindow.cpp;%(Outputs)</Outputs>
     </CustomBuild>
+    <ClInclude Include="medvolentry.h" />
     <ClInclude Include="spritevolentry.h" />
     <ClInclude Include="volentry.h" />
     <ClInclude Include="volfile.h" />

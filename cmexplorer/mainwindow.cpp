@@ -67,9 +67,10 @@ void MainWindow::dropEvent(QDropEvent *e)
 			QFile f(fname);
 			if (f.open(QIODevice::ReadOnly))
 			{
-				VolFile* volFile = new VolFile(info.baseName().toUpper(), f.readAll());
+				VolFile* volfile = new VolFile(info.baseName().toUpper(), f.readAll(), m_vol_files);
 
-				m_vol_list_widget->set_vol_file(volFile);
+				m_vol_list_widget->set_vol_file(volfile);
+				m_vol_files.push_back(volfile);
 			}
 		}
 	}
@@ -82,5 +83,5 @@ void MainWindow::volEntryDoubleClick(VolEntry* entry)
 
 void MainWindow::volEntryClick(VolEntry* entry)
 {
-
+	Q_UNUSED(entry);
 }

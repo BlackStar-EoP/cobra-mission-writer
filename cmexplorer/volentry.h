@@ -2,6 +2,7 @@
 
 #include <QByteArray>
 #include <QImage>
+#include <stdint.h>
 
 class VolEntry
 {

@@ -1,11 +1,13 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QVector>
 #include <stdint.h>
 
 class ImageLabel;
 
 class VolFileListWidget;
+class VolFile;
 class VolEntry;
 
 class MainWindow : public QMainWindow
@@ -24,4 +26,5 @@ private slots:
 private:
 	VolFileListWidget* m_vol_list_widget = nullptr;
 	ImageLabel* m_image_label = nullptr;
+	QVector<VolFile*> m_vol_files;
 };

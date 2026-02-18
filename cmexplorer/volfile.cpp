@@ -2,6 +2,7 @@
 
 #include "gcvolentry.h"
 #include "spritevolentry.h"
+#include "medvolentry.h"
 
 #include <QMap>
 
@@ -52,9 +53,10 @@ static QMap<uint32_t, QString> tilesets =
     { 13u, "SEASIDE" },
 };
 
-VolFile::VolFile(const QString& filename, QByteArray data)
+VolFile::VolFile(const QString& filename, QByteArray data, QVector<VolFile*>& vol_files)
 : m_filename(filename)
 , m_data(data)
+, m_vol_files(vol_files)
 {
     parse_entries();
 }
@@ -82,7 +84,7 @@ void VolFile::parse_entries()
                 m_entries.push_back(new GCVolEntry(i, entry));
                 break;
             case MAPS:
-                printf("");
+                m_entries.push_back(new MedVolEntry(i, entry, m_vol_files));
                 break;
             case SPRITES:
                 m_entries.push_back(new SpriteVolEntry(i, tilesets[i], entry));
@@ -97,4 +99,9 @@ void VolFile::parse_entries()
 QVector<VolEntry*>& VolFile::entries()
 {
     return m_entries;
+}
+
+QString VolFile::filename() const
+{
+    return m_filename;
 }
