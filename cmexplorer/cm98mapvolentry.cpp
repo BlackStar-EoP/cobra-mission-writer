@@ -103,7 +103,8 @@ void CM98MapVolEntry::create_img()
 
             if (m_render_triggers && (m_trigger_data.size() > 0u))
             {
-                if (t[stride + (MAP_HEIGHT * x)] != 0u)
+                // CM98 has 1 for blocking player
+                if (t[stride + (MAP_HEIGHT * x)] > 1u)
                 {
                     QImage trigger = m_tileset[tile];
                     trigger.invertPixels();
