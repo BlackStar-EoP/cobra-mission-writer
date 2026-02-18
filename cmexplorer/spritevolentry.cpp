@@ -78,6 +78,21 @@ QString SpriteVolEntry::to_string()
     return QString::number(index()) + QString(" - ") + m_tileset_name;
 }
 
+void SpriteVolEntry::next()
+{
+
+}
+
+void SpriteVolEntry::prev()
+{
+
+}
+
+void SpriteVolEntry::check(bool checked)
+{
+
+}
+
 const QVector<QImage>& SpriteVolEntry::tileset() const
 {
 	return m_tileset;

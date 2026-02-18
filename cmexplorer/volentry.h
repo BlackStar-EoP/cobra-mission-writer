@@ -12,6 +12,10 @@ public:
     virtual QImage image() = 0;
     virtual QString to_string() = 0;
 
+    virtual void next() = 0;
+    virtual void prev() = 0;
+    virtual void check(bool checked) = 0;
+
     uint32_t index() const;
 
 protected:

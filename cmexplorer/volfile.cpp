@@ -61,6 +61,17 @@ VolFile::VolFile(const QString& filename, QByteArray data, QVector<VolFile*>& vo
     parse_entries();
 }
 
+VolFile::VolFile(const QString& filename, QVector<VolFile*>& vol_files)
+: m_filename(filename)
+, m_vol_files(vol_files)
+{
+}
+
+void VolFile::add_entry(VolEntry* entry)
+{
+    m_entries.push_back(entry);
+}
+
 void VolFile::parse_entries()
 {
     uint32_t* header = (uint32_t*)m_data.data();
@@ -81,7 +92,7 @@ void VolFile::parse_entries()
         switch (vol_type)
         {
             case GC:
-                m_entries.push_back(new GCVolEntry(i, entry));
+                m_entries.push_back(new GCVolEntry(i, m_filename, entry));
                 break;
             case MAPS:
                 m_entries.push_back(new MedVolEntry(i, entry, m_vol_files));

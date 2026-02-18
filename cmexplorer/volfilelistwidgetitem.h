@@ -2,6 +2,7 @@
 
 #include <QListWidgetItem>
 #include <QFont>
+#include <QCheckBox>
 
 class VolEntry;
 class QLabel;
@@ -15,6 +16,14 @@ public:
 
     VolFileListWidgetItem(QWidget* parent, VolEntry* entry);
     VolEntry* entry() const;
+
+signals:
+    void contentChanged(VolEntry*);
+
+private slots:
+    void nextClicked();
+    void prevClicked();
+    void check(Qt::CheckState state);
 
 private:
     QLabel* m_object_label = nullptr;

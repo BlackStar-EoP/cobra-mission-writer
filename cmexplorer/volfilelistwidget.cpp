@@ -33,12 +33,20 @@ void VolFileListWidget::refreshList()
         for (VolEntry* entry : m_vol_file->entries())
         {
             VolFileListWidgetItem* item = new VolFileListWidgetItem(nullptr, entry);
+
+            connect(item, SIGNAL(contentChanged(VolEntry*)), this, SLOT(contentChanged(VolEntry*)));
+
             QListWidgetItem* listitem = new QListWidgetItem();
             listitem->setSizeHint(QSize(0, VolFileListWidgetItem::ITEM_HEIGHT));
             addItem(listitem);
             setItemWidget(listitem, item);
         }
     }
+}
+
+void VolFileListWidget::contentChanged(VolEntry* entry)
+{
+    emit objectDoubleClicked(entry);
 }
 
 void VolFileListWidget::objectDoubleClick(QListWidgetItem* item)

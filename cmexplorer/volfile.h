@@ -19,8 +19,12 @@ public:
 public:
     VolFile() = default;
     VolFile(const QString& filename, QByteArray data, QVector<VolFile*>& vol_files);
+    VolFile(const QString& filename, QVector<VolFile*>& vol_files);
+    void add_entry(VolEntry* entry);
     QVector<VolEntry*>& entries();
     QString filename() const;
+
+    
 
 private:
     void parse_entries();

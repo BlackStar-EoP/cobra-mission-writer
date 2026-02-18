@@ -23,6 +23,36 @@ QString MedVolEntry::to_string()
     return m_name;
 }
 
+void MedVolEntry::next()
+{
+    if (m_floors > 0u)
+    {
+        if (m_current_floor < (m_floors - 1u))
+        {
+            m_current_floor++;
+            create_img();
+        }
+    }
+}
+
+void MedVolEntry::prev()
+{
+    if (m_floors > 0u)
+    {
+        if (m_current_floor > 0u)
+        {
+            m_current_floor--;
+            create_img();
+        }
+    }
+}
+
+void MedVolEntry::check(bool checked)
+{
+    m_render_triggers = checked;
+    create_img();
+}
+
 void MedVolEntry::parse_map()
 {
     uint8_t* d = (uint8_t*)m_data.constData();
@@ -88,7 +118,6 @@ void MedVolEntry::create_img()
     if (m_sprite_vol == nullptr)
         return;
 
-
     SpriteVolEntry* tileset = nullptr;
     for (VolEntry* entry : m_sprite_vol->entries())
     {
@@ -113,13 +142,37 @@ void MedVolEntry::create_img()
 
     const QVector<QImage>& tiles = tileset->tileset();
 
+    uint16_t map_offset = m_map_data;
+    map_offset += (m_current_floor * m_width * m_height);
+
+    uint16_t trigger_offset = m_map_data + (m_width * m_height * m_floors);
+    trigger_offset += (m_current_floor * m_width * m_height);
+
     for (uint32_t y = 0u; y < m_height; ++y)
     {
         for (uint32_t x = 0u; x < m_width; ++x)
         {
-            uint8_t tile = d[m_map_data + offset++];
+            uint8_t tile = d[map_offset + offset];
+            uint8_t trigger = d[trigger_offset + offset++];
             if (tile >= tiles.size()) continue;
-            p.drawImage(x * SpriteVolEntry::TILE_WIDTH, y * SpriteVolEntry::TILE_HEIGHT, tiles[tile]);
+
+            if (m_render_triggers)
+            {
+                if (trigger != 0u)
+                {
+                    QImage triggerTile = tiles[tile];
+                    triggerTile.invertPixels();
+                    p.drawImage(x * SpriteVolEntry::TILE_WIDTH, y * SpriteVolEntry::TILE_HEIGHT, triggerTile);
+                }
+                else
+                {
+                    p.drawImage(x * SpriteVolEntry::TILE_WIDTH, y * SpriteVolEntry::TILE_HEIGHT, tiles[tile]);
+                }
+            }
+            else
+            {
+                p.drawImage(x * SpriteVolEntry::TILE_WIDTH, y * SpriteVolEntry::TILE_HEIGHT, tiles[tile]);
+            }
         }
     }
 

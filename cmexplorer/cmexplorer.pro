@@ -13,6 +13,7 @@ SOURCES += $$PWD/main.cpp \
            $$PWD/volentry.cpp \
            $$PWD/spritevolentry.cpp \
            $$PWD/medvolentry.cpp \
+           $$PWD/cm98mapvolentry.cpp \
            $$PWD/gcvolentry.cpp
 
 HEADERS += $$PWD/mainwindow.h \
@@ -23,4 +24,5 @@ HEADERS += $$PWD/mainwindow.h \
            $$PWD/volentry.h \
            $$PWD/spritevolentry.h \
            $$PWD/medvolentry.h \
+           $$PWD/cm98mapvolentry.h \
            $$PWD/gcvolentry.h

@@ -126,14 +126,16 @@ struct ImageDecoder
             {
                 return CopySkipTable;
             }
-            else {
+            else
+            {
                 return CopyFromBack;
             }
         }
     }
     void handle_one()
     {
-        switch (getHuffmanCode()) {
+        switch (getHuffmanCode())
+        {
         case SkipSingle:
             //printf("SkipSingle %d\n", offset);
             offset++;
@@ -170,16 +172,20 @@ struct ImageDecoder
                 out[offset * 4 + 3] = (v2 & 8) ? 0xFF : 0;
                 offset++;
             }
-            else if (v == 15) {
+            else if (v == 15)
+            {
                 out[offset * 4] = lastline[offset * 4];
                 out[offset * 4 + 1] = lastline[offset * 4 + 1];
                 out[offset * 4 + 2] = lastline[offset * 4 + 2];
                 out[offset * 4 + 3] = lastline[offset * 4 + 3];
                 offset++;
             }
-            else {
-                for (size_t n = 0; n < 4; n++) {
-                    if ((v >> n) & 1) {
+            else
+            {
+                for (size_t n = 0; n < 4; n++)
+                {
+                    if ((v >> n) & 1)
+                    {
                         out[offset * 4 + n] = readbyte();
                     }
                 }
@@ -191,11 +197,13 @@ struct ImageDecoder
         {
             uint8_t v = loadnibble();
             //printf("CopyMoveTable %d %d\n", offset, v);
-            if (v == 0) {
+            if (v == 0)
+            {
                 uint8_t count = readbyte();
                 int delta = deltas[count >> 6];
                 count = ((count & 0x3F) + 0x12);
-                for (size_t n = 0; n < count; n++) {
+                for (size_t n = 0; n < count; n++)
+                {
                     out[offset * 4] = out[delta * 4 + offset * 4];
                     out[offset * 4 + 1] = out[delta * 4 + offset * 4 + 1];
                     out[offset * 4 + 2] = out[delta * 4 + offset * 4 + 2];
@@ -203,11 +211,14 @@ struct ImageDecoder
                     offset++;
                 }
             }
-            else if (v == 15) {
+            else if (v == 15)
+            {
                 uint8_t count = readbyte();
-                if ((count & 0xC0) == 0) {
+                if ((count & 0xC0) == 0)
+                {
                     count = ((count & 0x3F) + 0x12);
-                    for (size_t n = 0; n < count; n++) {
+                    for (size_t n = 0; n < count; n++)
+                    {
                         out[offset * 4] = lastline[offset * 4];
                         out[offset * 4 + 1] = lastline[offset * 4 + 1];
                         out[offset * 4 + 2] = lastline[offset * 4 + 2];
@@ -215,17 +226,22 @@ struct ImageDecoder
                         offset++;
                     }
                 }
-                else {
+                else
+                {
                     count = ((count & 0x3F) + 0x12);
                     offset += count;
                 }
             }
-            else {
-                for (size_t n = 0; n < 4; n++) {
-                    if ((v >> n) & 1) {
+            else
+            {
+                for (size_t n = 0; n < 4; n++)
+                {
+                    if ((v >> n) & 1)
+                    {
                         out[offset * 4 + n] = readbyte();
                     }
-                    else {
+                    else
+                    {
                         out[offset * 4 + n] = out[offset * 4 + n - 4];
                     }
                 }
@@ -237,7 +253,8 @@ struct ImageDecoder
         {
             uint8_t a = loadnibble();
             //printf("CopyFromBack %d %d\n", offset, a);
-            if (a < 4) {
+            if (a < 4)
+            {
                 int delta = deltas[a];
                 out[offset * 4] = out[offset * 4 + delta * 4];
                 out[offset * 4 + 1] = out[offset * 4 + delta * 4 + 1];
@@ -245,19 +262,24 @@ struct ImageDecoder
                 out[offset * 4 + 3] = out[offset * 4 + delta * 4 + 3];
                 offset++;
             }
-            else {
+            else
+            {
                 uint8_t count;
                 int delta;
-                if (a < 10) {
+                if (a < 10)
+                {
                     count = loadnibble() + 2;
                     delta = deltas[a - 4];
                 }
-                else {
+                else
+                {
                     count = width - offset;
                     delta = deltas[a - 10];
                 }
-                if (delta < 0) {
-                    for (size_t k = 0; k < count; k++) {
+                if (delta < 0)
+                {
+                    for (size_t k = 0; k < count; k++)
+                    {
                         out[offset * 4] = out[delta * 4 + offset * 4];
                         out[offset * 4 + 1] = out[delta * 4 + offset * 4 + 1];
                         out[offset * 4 + 2] = out[delta * 4 + offset * 4 + 2];
@@ -265,8 +287,10 @@ struct ImageDecoder
                         offset++;
                     }
                 }
-                else if (delta > 0) {
-                    for (size_t k = 0; k < count; k++) {
+                else if (delta > 0)
+                {
+                    for (size_t k = 0; k < count; k++)
+                    {
                         out[offset * 4] = lastline[offset * 4];
                         out[offset * 4 + 1] = lastline[offset * 4 + 1];
                         out[offset * 4 + 2] = lastline[offset * 4 + 2];
@@ -274,7 +298,8 @@ struct ImageDecoder
                         offset++;
                     }
                 }
-                else {
+                else
+                {
                     offset += count;
                 }
             }
@@ -284,24 +309,15 @@ struct ImageDecoder
     }
 };
 
-const uint8_t bmpheader[] = { 0x42, 0x4d, 0x0a, 0xc2, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x8a, 0x00, 0x00, 0x00, 0x7c, 0x00,
-                             0x00, 0x00, 0x50, 0x02, 0x00, 0x00, 0x68, 0x01, 0x00, 0x00, 0x01, 0x00, 0x18, 0x00, 0x00, 0x00,
-                             0x00, 0x00, 0x80, 0xc1, 0x09, 0x00, 0x23, 0x2e, 0x00, 0x00, 0x23, 0x2e, 0x00, 0x00, 0x00, 0x00,
-                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff, 0x00,
-                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x42, 0x47, 0x52, 0x73, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-
 const uint8_t defaultpal[] =
 {
  0x00, 0x00, 0x0c, 0x00, 0xc0, 0x00, 0xfa, 0x0d, 0x00, 0x0c, 0x0c, 0x0c, 0xc0, 0x0c, 0x77, 0x07,
  0xcc, 0x0c, 0x0f, 0x00, 0xf0, 0x00, 0xff, 0x00, 0x00, 0x0f, 0x0f, 0x0f, 0xf0, 0x0f, 0xff, 0x0f,
 };
 
-GCVolEntry::GCVolEntry(uint32_t index, QByteArray data)
+GCVolEntry::GCVolEntry(uint32_t index, const QString& name, QByteArray data)
     : VolEntry(index, data)
+    , m_name(name)
 {
     uint8_t* d = (uint8_t*)m_data.constData();
 
@@ -393,16 +409,39 @@ GCVolEntry::GCVolEntry(uint32_t index, QByteArray data)
             640 * 3,
             QImage::Format_BGR888);
 
-        m_image = image.copy();
+        m_frames.push_back(image.copy());
     }
 }
 
 QImage GCVolEntry::image()
 {
-    return m_image;
+    return m_frames[m_frame_idx];
 }
 
 QString GCVolEntry::to_string()
 {
-    return "GC";
+    return m_name;
+}
+
+void GCVolEntry::next()
+{
+    if (m_frames.size() > 1u)
+    {
+        if (m_frame_idx < (m_frames.size() - 1u))
+            m_frame_idx++;
+    }
+}
+
+void GCVolEntry::prev()
+{
+    if (m_frames.size() > 1u)
+    {
+        if (m_frame_idx > 0u)
+            m_frame_idx--;
+    }
+}
+
+void GCVolEntry::check(bool checked)
+{
+
 }

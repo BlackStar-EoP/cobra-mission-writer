@@ -24,6 +24,7 @@ signals:
     void objectDoubleClicked(VolEntry* entry);
 
 private slots:
+    void contentChanged(VolEntry* entry);
     void objectDoubleClick(QListWidgetItem* item);
     void objectClick(QListWidgetItem* item);
 

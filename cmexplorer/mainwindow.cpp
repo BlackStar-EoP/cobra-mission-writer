@@ -16,6 +16,8 @@
 #include "volfile.h"
 #include "volfilelistwidget.h"
 #include "volfilelistwidgetitem.h"
+#include "gcvolentry.h"
+#include "cm98mapvolentry.h"
 
 MainWindow::MainWindow()
 {
@@ -56,21 +58,86 @@ void MainWindow::dropEvent(QDropEvent *e)
 		return;
 
 	QStringList accepted_types;
-	accepted_types << "vol";
+	accepted_types << "vol" << "gsc" << "map" << "att";
 
 	QString fname = e->mimeData()->urls()[0].toLocalFile();
 	QFileInfo info(fname);
 	if (info.exists())
 	{
-		if (accepted_types.contains(info.suffix().trimmed(), Qt::CaseInsensitive))
+		QString suffix = info.suffix().trimmed().toUpper();
+		if (accepted_types.contains(suffix, Qt::CaseInsensitive))
 		{
 			QFile f(fname);
 			if (f.open(QIODevice::ReadOnly))
 			{
-				VolFile* volfile = new VolFile(info.baseName().toUpper(), f.readAll(), m_vol_files);
+				if (suffix == "VOL")
+				{
+					VolFile* volfile = new VolFile(info.baseName().toUpper(), f.readAll(), m_vol_files);
+					m_vol_list_widget->set_vol_file(volfile);
+					m_vol_files.push_back(volfile);
+				}
+				else if (suffix == "GSC")
+				{
+					const QString cm98gsc_name = "CM98GSC";
+					VolFile* cm98gsc = nullptr;
+					for (VolFile* file : m_vol_files)
+					{
+						if (file->filename() == cm98gsc_name)
+						{
+							cm98gsc = file;
+							break;
+						}
+					}
 
-				m_vol_list_widget->set_vol_file(volfile);
-				m_vol_files.push_back(volfile);
+					if (cm98gsc == nullptr)
+					{
+						cm98gsc = new VolFile(cm98gsc_name, m_vol_files);
+						m_vol_files.push_back(cm98gsc);
+					}
+
+					cm98gsc->add_entry(new GCVolEntry(cm98gsc->entries().size(), info.baseName(), f.readAll()));
+					m_vol_list_widget->set_vol_file(cm98gsc);
+				}
+				else if (suffix == "MAP")
+				{
+					const QString cm98map_name = "CM98MAP";
+					VolFile* cm98map = nullptr;
+					for (VolFile* file : m_vol_files)
+					{
+						if (file->filename() == cm98map_name)
+						{
+							cm98map = file;
+							break;
+						}
+					}
+
+					if (cm98map == nullptr)
+					{
+						cm98map = new VolFile(cm98map_name, m_vol_files);
+						m_vol_files.push_back(cm98map);
+					}
+
+					const QString cm98gsc_name = "CM98GSC";
+					VolFile* cm98gsc = nullptr;
+					for (VolFile* file : m_vol_files)
+					{
+						if (file->filename() == cm98gsc_name)
+						{
+							cm98gsc = file;
+							break;
+						}
+					}
+
+					cm98map->add_entry(new CM98MapVolEntry(cm98map->entries().size(), info.baseName(), f.readAll(), cm98gsc));
+					m_vol_list_widget->set_vol_file(cm98map);
+
+
+				}
+				else if (suffix == "ATT")
+				{
+
+				}
+				f.close();
 			}
 		}
 	}

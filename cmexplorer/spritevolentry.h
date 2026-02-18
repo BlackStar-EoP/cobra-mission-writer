@@ -13,6 +13,10 @@ public:
 
     QImage image() override;
     QString to_string() override;
+    void next() override;
+    void prev() override;
+    void check(bool checked) override;
+
     const QVector<QImage>& tileset() const;
     const QString& tileset_name() const;
 
