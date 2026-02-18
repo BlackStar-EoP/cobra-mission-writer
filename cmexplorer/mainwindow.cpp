@@ -128,14 +128,35 @@ void MainWindow::dropEvent(QDropEvent *e)
 						}
 					}
 
-					cm98map->add_entry(new CM98MapVolEntry(cm98map->entries().size(), info.baseName(), f.readAll(), cm98gsc));
+					cm98map->add_entry(new CM98MapVolEntry(cm98map->entries().size(), info.baseName().toUpper(), f.readAll(), cm98gsc));
 					m_vol_list_widget->set_vol_file(cm98map);
 
 
 				}
 				else if (suffix == "ATT")
 				{
+					const QString cm98map_name = "CM98MAP";
+					VolFile* cm98map = nullptr;
+					for (VolFile* file : m_vol_files)
+					{
+						if (file->filename() == cm98map_name)
+						{
+							cm98map = file;
+							break;
+						}
+					}
 
+					if (cm98map != nullptr)
+					{
+						for (VolEntry* entry : cm98map->entries())
+						{
+							CM98MapVolEntry* map_entry = static_cast<CM98MapVolEntry*>(entry);
+							if (entry->to_string() == info.baseName().toUpper())
+							{
+								map_entry->set_trigger_data(f.readAll());
+							}
+						}
+					}
 				}
 				f.close();
 			}

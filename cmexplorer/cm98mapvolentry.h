@@ -18,15 +18,19 @@ public:
     void prev() override;
     void check(bool checked) override;
 
+    void set_trigger_data(QByteArray trigger_data);
+
 private:
     void build_tileset();
     void create_img();
 
 
 private:
-    VolFile* m_cm98_vol_file;
+    VolFile* m_cm98_vol_file = nullptr;
     QImage m_map;
     QString m_name;
 
+    QByteArray m_trigger_data;
     QVector<QImage> m_tileset;
+    bool m_render_triggers = false;
 };

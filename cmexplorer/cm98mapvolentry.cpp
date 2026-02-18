@@ -38,7 +38,13 @@ void CM98MapVolEntry::prev()
 
 void CM98MapVolEntry::check(bool checked)
 {
+    m_render_triggers = checked;
+    create_img();
+}
 
+void CM98MapVolEntry::set_trigger_data(QByteArray trigger_data)
+{
+    m_trigger_data = trigger_data;
 }
 
 void CM98MapVolEntry::build_tileset()
@@ -77,6 +83,7 @@ void CM98MapVolEntry::create_img()
         return;
 
     uint8_t* d = (uint8_t*)m_data.constData();
+    uint8_t* t = (uint8_t*)m_trigger_data.constData();
     uint16_t offset = 0u;
 
     QImage map(MAP_WIDTH * SpriteVolEntry::TILE_WIDTH, MAP_HEIGHT * SpriteVolEntry::TILE_HEIGHT, QImage::Format_ARGB32);
@@ -93,7 +100,25 @@ void CM98MapVolEntry::create_img()
             uint8_t tile = d[stride + (MAP_HEIGHT * x)];
 
             if (tile >= m_tileset.size()) continue;
-            p.drawImage(x * SpriteVolEntry::TILE_WIDTH, y * SpriteVolEntry::TILE_HEIGHT, m_tileset[tile]);
+
+            if (m_render_triggers && (m_trigger_data.size() > 0u))
+            {
+                if (t[stride + (MAP_HEIGHT * x)] != 0u)
+                {
+                    QImage trigger = m_tileset[tile];
+                    trigger.invertPixels();
+                    p.drawImage(x * SpriteVolEntry::TILE_WIDTH, y * SpriteVolEntry::TILE_HEIGHT, trigger);
+                }
+                else
+                {
+                    p.drawImage(x * SpriteVolEntry::TILE_WIDTH, y * SpriteVolEntry::TILE_HEIGHT, m_tileset[tile]);
+                }
+            }
+            else
+            {
+                p.drawImage(x * SpriteVolEntry::TILE_WIDTH, y * SpriteVolEntry::TILE_HEIGHT, m_tileset[tile]);
+            }
+
         }
         ++stride;
     }
